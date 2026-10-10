@@ -1,6 +1,15 @@
 {
-    "name" : "b",
-    "hp" : 100,
-    "floor" : 1,
-    "skill" : [[["name","attack"], ["damage",10]], [["name","use bow"], ["damage",20]]]
+    "name": "Heechan the Warrior",
+    "hp": 170,
+    "floor": 2,
+    "gold": 70,
+    "drops": [
+        {"name": "Orc Axe", "chance": 40},
+        {"name": "Iron Shard", "chance": 30}
+    ],
+    "skill": [
+        {"name": "Axe Swing", "damage": 25},
+        {"name": "Heechan's Rage", "damage": 35,
+         "debuff": {"type": "weaken", "value": 5, "turns": 2}}
+    ]
 }

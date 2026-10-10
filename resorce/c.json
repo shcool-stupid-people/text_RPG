@@ -1,6 +1,15 @@
 {
-    "name" : "c",
-    "hp" : 100,
-    "floor" : 1,
-    "skill" : [[["name","attack"], ["damage",10]], [["name","use bow"], ["damage",20]]]
+    "name": "Heechan the Dark Knight",
+    "hp": 300,
+    "floor": 3,
+    "gold": 150,
+    "drops": [
+        {"name": "Dark Armor", "chance": 30},
+        {"name": "Abyss Crystal", "chance": 15}
+    ],
+    "skill": [
+        {"name": "Shadow Slash", "damage": 42},
+        {"name": "Abyss Cleave", "damage": 57,
+         "debuff": {"type": "dehydration", "value": 10, "turns": 3}}
+    ]
 }

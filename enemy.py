@@ -1,65 +1,80 @@
 import random
 
+import entity
 
-class enemy:
 
-    def __init__(self, name, skill, hp):
-        self.probability_list = []
-        self.enemy_name = name
-        self.skill_list = skill  # enemy_manager에서 전달받은 스킬 리스트
-        self.hp = hp
+class enemy(entity.Monster):
+    """entity.Monster를 상속한 적 클래스.
+
+    Being의 attack / on_hit / on_death / is_death를 그대로 쓰고,
+    attack만 스킬 방식으로 덮어쓴다. (MonsterBattler가 obj.attack(target.obj)를 호출함)
+    """
+
+    def __init__(self, name, skill, hp, gold=0, drops=None):
+        # Being.__init__이 max_hp 범위를 검사하므로 먼저 설정
+        self.name = name
         self.max_hp = hp
+        super().__init__(hp)
+
+        self.skill_list = skill  # [{"name":..., "damage":..., "debuff":{...}}, ...]
+        self.gold = gold
+        self.drops = drops or []  # [{"name":..., "chance":...}, ...]
+        self.probability_list = []
         self.enemy_action_percent()
 
     def enemy_action_percent(self):
-        """스킬 개수에 따라 앞쪽 스킬에 더 높은 확률을 부여하는 확률 리스트 생성"""
+        """앞쪽 스킬일수록 높은 확률을 갖는 확률 리스트 생성
+        예: 스킬 3개 -> 인덱스 0은 3번, 1은 2번, 2는 1번 추가"""
         self.probability_list = []
-        temp = len(self.skill_list)
+        count = len(self.skill_list)
 
-        if temp == 0:
-            return
-
-        # 변수명 중복 해결 (i -> idx, j)
-        # 예: 스킬이 3개일 때 -> 인덱스 0은 3번, 인덱스 1은 2번, 인덱스 2는 1번 추가
-        for idx in range(temp):
-            weight = temp - idx
-            for _ in range(weight):
+        for idx in range(count):
+            for _ in range(count - idx):
                 self.probability_list.append(idx)
 
     def use_skill(self):
-        """확률 리스트에서 스킬 하나를 무작위로 뽑아 사용"""
+        """확률 리스트에서 스킬 하나를 뽑아 반환 (스킬이 없으면 기본 공격)"""
         if not self.skill_list:
-            # 스킬이 없을 경우 기본 공격 예외 처리
-            print(f"{self.enemy_name}의 기본 공격!")
-            return {"name": "기본 공격", "damage": 5}
+            return {"name": "기본 공격", "damage": self.attack_power}
 
-        select_idx = random.choice(self.probability_list)
-        selected_skill = self.skill_list[select_idx]
+        return self.skill_list[random.choice(self.probability_list)]
 
-        # selected_skill 구조 예시: {'name': 'attack', 'damage': 10}
-        skill_name = selected_skill.get("name", "스킬")
-        print(f"{self.enemy_name}이(가) [{skill_name}] 스킬을 사용했습니다!")
+    def attack(self, target):
+        """Being.attack을 스킬 방식으로 덮어쓰기"""
+        skill = self.use_skill()
+        damage = skill.get("damage", self.attack_power)
 
-        return selected_skill
+        print(f"{self.name}이(는) [{skill.get('name', '스킬')}]을(를) 사용했다.")
+        target.on_hit(damage)
 
-    def take_damage(self, damage):
-        """플레이어로부터 데미지를 입을 때 사용"""
-        self.hp -= damage
-        if self.hp < 0:
-            self.hp = 0
-        print(
-            f"{self.enemy_name}이(가) {damage}의 피해를 입었습니다. (남은 HP: {self.hp}/{self.max_hp})"
-        )
+        debuff = skill.get("debuff")
+        if debuff and target.hp > 0:
+            self.apply_debuff(target, debuff)
 
-    def is_alive(self):
-        """적 생존 여부 확인"""
-        return self.hp > 0
+        print(f"{self.name}의 체력: {self.hp}, {target.name}의 체력: {target.hp}\n")
 
-    def set_hp(self, hp):
-        self.hp += hp
+    def apply_debuff(self, target, debuff):
+        """디버프를 대상에게 전달.
+        debuff = {"type": "poison|weaken|dehydration", "value": n, "turns": n}
+        대상이 add_debuff(debuff)를 구현하면 그쪽에서 처리하고, 없으면 안내만 출력"""
+        if hasattr(target, "add_debuff"):
+            target.add_debuff(debuff)
+        else:
+            print(f"[sys]: {target.name}에게 디버프 {debuff['type']} (아직 처리 코드 없음)")
+
+    def get_name(self):
+        return self.name
 
     def get_hp(self):
         return self.hp
 
-    def get_name(self):
-        return self.enemy_name
+    def change_hp(self, hp):
+        """player.change_hp와 같은 이름 규칙 (값을 더함)"""
+        self.hp += hp
+
+    def get_gold(self):
+        return self.gold
+
+    def roll_drops(self):
+        """처치 시 호출. 확률(%)에 따라 얻은 부산물 이름 리스트 반환"""
+        return [d["name"] for d in self.drops if random.randint(1, 100) <= d["chance"]]

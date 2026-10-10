@@ -1,9 +1,15 @@
 {
-    "name": "a",
+    "name": "Heechan the Archer",
     "hp": 100,
     "floor": 1,
+    "gold": 30,
+    "drops": [
+        {"name": "Goblin Arrow", "chance": 50},
+        {"name": "Broken Bow", "chance": 20}
+    ],
     "skill": [
-        {"name": "attack", "damage": 10},
-        {"name": "use bow", "damage": 20}
+        {"name": "Slash", "damage": 10},
+        {"name": "Arrow Shot", "damage": 20,
+         "debuff": {"type": "poison", "value": 3, "turns": 3}}
     ]
 }
