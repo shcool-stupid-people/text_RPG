@@ -1,6 +1,5 @@
-import random
-import time
-
+'''이거 임시로 해둔거라 곧 삭제할꺼임
+이거 참고해서 코드 짜지 마십시오'''
 
 class Being:
     name = ''
@@ -20,10 +19,10 @@ class Being:
     def __str__(self):
         return f"{self.name}의 체력: {self.hp}/{self.max_hp}"
     
-    def attack(self, target):
-        print(f"{self.name}이(는) {target.name}을(를) 공격했다.")
-        target.on_hit(self.attack_power)
-        print(f"{self.name}의 체력: {self.hp}, {target.name}의 체력: {target.hp}\n")
+    # def attack(self, target):
+    #     print(f"{self.name}이(는) {target.name}을(를) 공격했다.")
+    #     target.on_hit(self.attack_power)
+    #     print(f"{self.name}의 체력: {self.hp}, {target.name}의 체력: {target.hp}\n")
 
     def on_hit(self, damage):
         self.hp -= damage
@@ -35,7 +34,7 @@ class Being:
             print(f"{self.name}이(가) 죽었습니다.")
 
     def is_death(self):
-        print(self.hp, self.hp <= 0)
+        # print(self.hp, self.hp <= 0)
         return self.hp <= 0
 
 

@@ -63,8 +63,6 @@ class TurnManager:
         monsterBattler = entityBattle.MonsterBattler(monster, self.disruption)
         self.monsters.append(monsterBattler)
 
-
-
     def turn_delay(self, delay_time=0.5):
         for i in range(2):
             print()
@@ -89,4 +87,3 @@ if __name__ == "__main__":
         if (turn_manager.disruption.is_exit()):
             break
     print("끝남")
-
