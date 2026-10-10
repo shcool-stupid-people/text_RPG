@@ -1,0 +1,6 @@
+{
+    "name" : "b",
+    "hp" : 100,
+    "floor" : 1,
+    "skill" : [[["name","attack"], ["damage",10]], [["name","use bow"], ["damage",20]]]
+}
