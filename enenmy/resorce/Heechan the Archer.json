@@ -4,7 +4,7 @@
     "floor": 1,
     "gold": 30,
     "drops": [
-        {"name": "Goblin Arrow", "chance": 50},
+        {"name": "Heechan's Arrow", "chance": 50},
         {"name": "Broken Bow", "chance": 20}
     ],
     "skill": [
