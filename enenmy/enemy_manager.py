@@ -6,7 +6,19 @@ import enemy
 
 
 class enemy_manager:
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self):
+        cls = type(self)
+        if hasattr(cls, "_init"):
+            return
+        cls._init = True
+
+        self.data_list = []
+
         self.data_list = []
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         self.resource_file_dir = os.path.join(
