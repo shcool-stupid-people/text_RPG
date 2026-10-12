@@ -1,6 +1,6 @@
 import random
 
-import entity
+import text_RPG.battle.entity as entity
 
 
 class enemy(entity.Monster):

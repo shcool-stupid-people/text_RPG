@@ -10,7 +10,7 @@ class event():
         self.equipment_reinforce_percent_list = [100,50,-50,-100] #강화확률
         self.equipment_money = [100,50,-50,-100] #강화 비용
         self.special_list = ["invincible","double_spawn","reset_all_buff"] #스페셜이벤트
-        self.player = player.player() #플레이어 호출
+        self.player = player() #플레이어 호출
 
     def drawing_event(self): #뽑기
         result = random.randrange(0,10000)

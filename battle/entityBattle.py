@@ -1,6 +1,6 @@
 # 플레이어 행동과 죽는거 만들기(action을 못 하도록)
 
-import entity  # noqa: F401, I001
+import text_RPG.battle.entity as entity  # noqa: F401, I001
 import random
 import time
 

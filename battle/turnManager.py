@@ -1,7 +1,7 @@
-import entity  # noqa: I001
+import text_RPG.battle.entity as entity  # noqa: I001
 import random  # noqa: F401
 import time
-import entityBattle
+import text_RPG.battle.entityBattle as entityBattle
 
 class BattleDisruption:
     ''' 중간 연결자 역활을 하는 클래스
