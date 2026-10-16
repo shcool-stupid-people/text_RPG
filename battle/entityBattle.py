@@ -25,8 +25,8 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
         print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
         target.on_hit(damage)
         print(
-            f"{self.obj.name}의 체력: {self.obj.hp}, "
-            f"{target.obj.name}의 체력: {target.obj.hp}\n"
+            f"{self.obj.name}의 체력: {self.get_hp()}, "
+            f"{target.obj.name}의 체력: {target.get_hp()}\n"
         )
         
     def on_hit(self, damage):
@@ -42,6 +42,9 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
 
     def get_attack_power(self):
         return self.obj.attack_power
+    
+    def get_hp(self):
+        return self.obj.hp
 
 class MonsterBattler(EntityBattler):
     def action(self, player, battler_groups):
@@ -63,7 +66,8 @@ class PlayerBattler(EntityBattler):
         #     self.attack(battler_groups[answer])
         actions = (
             "공격",
-            "도망"
+            "도망",
+            "얼음!" # 테스트용
         )
 
         select = questionary.select(
@@ -98,3 +102,31 @@ class PlayerBattler(EntityBattler):
         # print(targi_idx)
 
         return battler_groups[targi_idx]
+
+    
+    def attack(self, target, damage):
+        print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
+        target.on_hit(damage)
+        print(
+            f"{self.obj.name}의 체력: {self.get_hp()}, "
+            f"{target.obj.name}의 체력: {target.obj.hp}\n"
+        )
+        
+    def on_hit(self, damage):
+        self.obj.change_hp(-damage)
+        # if (self.is_death()):
+        #     self.disruption.exit_battle()
+        if (self.is_death()):
+            self.disruption.exit_battle()
+
+    def on_death(self):
+        self.obj.on_death()
+
+    def is_death(self):
+        return self.obj.get_hp() <= 0
+
+    def get_attack_power(self):
+        return self.obj.get_damage()
+    
+    def get_hp(self):
+        return self.obj.get_hp()
