@@ -28,7 +28,7 @@ class Being:
         self.hp -= damage
         if self.hp <= 0:
             self.hp = 0
-            self.on_death()
+            # self.on_death()
 
     def on_death(self):
             print(f"{self.name}이(가) 죽었습니다.")

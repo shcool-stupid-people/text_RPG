@@ -28,11 +28,12 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
             f"{self.obj.name}의 체력: {self.get_hp()}, "
             f"{target.obj.name}의 체력: {target.get_hp()}\n"
         )
+        if (target.is_death()):
+            print(f"{target.obj.name}이(가) 죽었습니다.")
+            self.disruption.exit_battle()
         
     def on_hit(self, damage):
         self.obj.on_hit(damage)
-        if (self.is_death()):
-            self.disruption.exit_battle()
 
     def on_death(self):
         self.obj.on_death()
@@ -104,20 +105,20 @@ class PlayerBattler(EntityBattler):
         return battler_groups[targi_idx]
 
     
-    def attack(self, target, damage):
-        print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
-        target.on_hit(damage)
-        print(
-            f"{self.obj.name}의 체력: {self.get_hp()}, "
-            f"{target.obj.name}의 체력: {target.obj.hp}\n"
-        )
+    # def attack(self, target, damage):
+    #     print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
+    #     target.on_hit(damage)
+    #     print(
+    #         f"{self.obj.name}의 체력: {self.get_hp()}, "
+    #         f"{target.obj.name}의 체력: {target.get_hp()}\n"
+    #     )
+    #     if (self.is_death()):
+    #         self.disruption.exit_battle()
         
     def on_hit(self, damage):
         self.obj.change_hp(-damage)
         # if (self.is_death()):
         #     self.disruption.exit_battle()
-        if (self.is_death()):
-            self.disruption.exit_battle()
 
     def on_death(self):
         self.obj.on_death()

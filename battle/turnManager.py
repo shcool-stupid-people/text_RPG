@@ -39,15 +39,15 @@ class TurnManager:
 
 
     def next_turn(self):
-        if (self.turn_flow) :
-            battler = self.turn_flow.pop(0)
-            self.turn_process(battler)
-        else:
+        if (not self.turn_flow) :
             self.turn_delay(0.05)
             print(f"---제 {self.cnt}턴---")
             self.set_turn_flow()
 
             self.cnt += 1
+        battler = self.turn_flow.pop(0)
+        self.turn_process(battler)
+        
 
     def set_turn_flow(self):
         self.turn_flow.append(self.player_battler)
