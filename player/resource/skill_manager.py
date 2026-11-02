@@ -1,11 +1,12 @@
-import skill
+from .skill import skill
 import os
 import json
 
 class skill_manager():
     def __init__(self):
-        self.skills_ = []
+        self.skills = []
         self.init_skills()
+        
 
     def init_skills(self):
         for root, dirs, files in os.walk("player\\resource"):
@@ -20,5 +21,5 @@ class skill_manager():
 
                 for _ in range(len(data)):
                     self.skills.append(skill(data[_]["name"], data[_]["cost"], data[_]["mp"], data[_]["rank"]))
-                            
+
                 
