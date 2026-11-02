@@ -58,10 +58,10 @@ class player():
     def remove_event(self, event):
         self.applicated_event.remove(event)
 
-    def get_player_pos(self):
+    def get_pos(self):
         return self.position
     
-    def change_player_pos(self, x, y):
+    def change_pos(self, x, y):
         self.position[0] = y
         self.position[1] = x
 
