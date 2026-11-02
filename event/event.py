@@ -76,3 +76,5 @@ class event():
 
 test = event()
 test.drawing_event()
+
+print("Hello gold silver bronze")
