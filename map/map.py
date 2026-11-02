@@ -43,7 +43,7 @@ class field():
                 print("shop")
 
     # def chanage(self):
-    #     self.x = self.player.get_pos() 
+    #     self.x = self.player.get_pos()
     #     self.y = self.player.get_pos()
 
     def check_grid(self):

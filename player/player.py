@@ -16,7 +16,7 @@ class player():
         
         self.applicated_event = []
 
-        self.position = [] #(y,x)
+        self.position = [3, 0] #(y,x)
 
         self.skill_possess = []
 
