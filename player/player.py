@@ -64,7 +64,12 @@ class player():
     def change_pos(self, x, y):
         self.position[0] = y
         self.position[1] = x
+    
+    def move(self, x, y):
+        self.position[0] += y
+        self.position[1] += x
 
+        
     def get_coin(self):
         return self.coin
 

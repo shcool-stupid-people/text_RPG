@@ -22,6 +22,7 @@ class field():
         self.room = {}
         self.enterance = [3,0]
         self.generate_room()
+        print(self.room)
         
     def generate_room(self):
         room_num = random.randint(10, len(self.grid)*len(self.grid[0]) - (len(self.grid[0]) + len(self.grid))*2)
@@ -35,8 +36,9 @@ class field():
         return self.enterance
     
     def check_room(self):
-        pos = self.player.get_pos()
-        if (pos in self.room):
+        pos = (self.player.get_pos()[1], self.player.get_pos()[0])
+
+        if (tuple(pos) in self.room.keys()):
             if(self.room[pos] == "battle"):
                 print("battle")
             elif(self.room[pos] == "shop"):

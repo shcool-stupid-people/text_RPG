@@ -34,3 +34,14 @@ while(1):
 
     if (move == "exit"):
         break
+    elif (move == "right"):
+        a.move(1,0)
+    elif (move == "left"):
+        a.move(-1,0)
+    elif (move == "up"):
+        a.move(0,-1)
+    elif (move == "down"):
+        a.move(0,1)
+
+    world.check_room()
+    
