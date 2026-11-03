@@ -1,0 +1,32 @@
+[
+  {
+    "name": "파이어볼",
+    "cost": 100,
+    "mp": 20,
+    "rank": "COMMON"
+  },
+  {
+    "name": "아이스 스피어",
+    "cost": 200,
+    "mp": 35,
+    "rank": "RARE"
+  },
+  {
+    "name": "라이트닝 볼트",
+    "cost": 350,
+    "mp": 50,
+    "rank": "EPIC"
+  },
+  {
+    "name": "메테오",
+    "cost": 1000,
+    "mp": 150,
+    "rank": "LEGENDARY"
+  },
+  {
+    "name": "힐링",
+    "cost": 150,
+    "mp": 40,
+    "rank": "COMMON"
+  }
+]

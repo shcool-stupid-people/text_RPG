@@ -1,5 +1,5 @@
 class player():
-    def __init__(self):
+    def __init__(self, skill_manager):
         self.hp = 100
         self.mp = 100
         self.damage = 10
@@ -16,9 +16,11 @@ class player():
         
         self.applicated_event = []
 
-        self.position = [] #(y,x)
+        self.position = [3, 0] #(y,x)
 
-        self.skill = []
+        self.skill_possess = []
+
+        self.skill_manager = skill_manager
 
     def get_hp(self):
         return self.hp
@@ -56,13 +58,18 @@ class player():
     def remove_event(self, event):
         self.applicated_event.remove(event)
 
-    def get_player_pos(self):
+    def get_pos(self):
         return self.position
     
-    def change_player_pos(self, x, y):
+    def change_pos(self, x, y):
         self.position[0] = y
         self.position[1] = x
+    
+    def move(self, x, y):
+        self.position[0] += y
+        self.position[1] += x
 
+        
     def get_coin(self):
         return self.coin
 
@@ -118,11 +125,11 @@ class player():
         else:
             print("item is not exist")
 
-    def equip_skill(self):
-        pass
+    def posses_skill(self, value):
+        self.skill_possess.append(value)
 
-    def unequip_skill(self):
-        pass
+    def use_skill(self, value):
+        using_skill = self.skill_possess[value]
+        return using_skill.get_name(), using_skill.get_mp()
 
-    def use_skill(self):
-        pass
+#posses_skill를 불러와서 use_skill에 인덱스를 넘겨주는 형식으로 사용
