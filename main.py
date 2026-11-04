@@ -110,8 +110,14 @@ class main():
                 
 
     def show_info(self):
-        pass
-
+        print(f"health: [{self.a.get_hp()}/{self.a.get_max_hp()}]")
+        print(f"mp: [{self.a.get_mp()}/{self.a.get_max_mp()}]")
+        print(f"damage: {self.a.get_damage()}")
+        print(f"accuaracy: {self.a.get_accuracy_rate()}")
+        print(f"coin: {self.a.get_coin()}")
+        print(f"weapon: {self.a.get_equip_weapon()}")
+        print(f"armor: {self.a.get_equip_armor()}")
+        print(f"skill: {self.a.get_skill()}")
 
 
 main()

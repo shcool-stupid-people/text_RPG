@@ -1,7 +1,9 @@
 class player():
     def __init__(self, skill_manager):
         self.hp = 100
+        self.max_hp = 100
         self.mp = 100
+        self.max_mp = 100
         self.damage = 10
         self.armored = 10
         
@@ -28,6 +30,18 @@ class player():
     def change_hp(self, value):
         self.hp += value
 
+    def get_max_hp(self):
+        return self.max_hp
+
+    def change_max_hp(self, value):
+        self.max_hp = value
+
+    def get_max_mp(self):
+        return self.max_mp
+
+    def change_max_mp(self, value):
+        self.max_mp = value
+
     def get_mp(self):
         return self.mp
     
@@ -46,7 +60,7 @@ class player():
     def get_equip_armor(self):
         return self.equipment_armor
 
-    def change_epuipmet_weapon(self, value):
+    def change_epuip_weapon(self, value):
         self.equipment_weapon = value
 
     def change_epuip_armor(self, value):
@@ -69,7 +83,6 @@ class player():
         self.position[0] += y
         self.position[1] += x
 
-        
     def get_coin(self):
         return self.coin
 
@@ -77,16 +90,22 @@ class player():
         self.coin += value
 
     def get_damage(self):
-        real_damage = self.get_equip_weapon.get_damage() + self.damage #need to change/ how to get weapons damage
-        return real_damage
-    
+        try:
+            real_damage = self.get_equip_weapon.get_damage() + self.damage #need to change/ how to get weapons damage
+            return real_damage
+        except:
+            return self.damage
+        
     def change_damage(self, value):
         self.damage += value
 
     def get_armored(self):
-        real_armored = self.get_equip_armor.get_damage() + self.armored #need to change/ how to get weapons damage
-        return real_armored
-    
+        try:
+            real_armored = self.get_equip_armor.get_damage() + self.armored #need to change/ how to get weapons damage
+            return real_armored
+        except:
+            return self.armored
+        
     def change_armored(self, value):
         self.armored += value
 
@@ -124,7 +143,9 @@ class player():
 
         else:
             print("item is not exist")
-
+    def get_skill(self):
+        return self.skill_possess
+    
     def posses_skill(self, value):
         self.skill_possess.append(value)
 
