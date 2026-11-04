@@ -22,8 +22,20 @@ class field():
         self.room = {}
         self.enterance = [3,0]
         self.generate_room()
-        print(self.room)
-        
+
+    def show_map(self):
+        for i in range(len(self.grid)):
+            for j in self.grid[i]:
+                if (j == 5):
+                    print("==", end="")
+                elif (j == 0):
+                    print("x", end="")
+                elif (j == 2):
+                    print("O", end="")
+                else:
+                    print(f"{j} ",end="")
+            print()
+
     def generate_room(self):
         room_num = random.randint(10, len(self.grid)*len(self.grid[0]) - (len(self.grid[0]) + len(self.grid))*2)
 
@@ -36,14 +48,21 @@ class field():
         return self.enterance
     
     def check_room(self):
-        pos = (self.player.get_pos()[1], self.player.get_pos()[0])
+        pos_r = self.player.get_pos()
+        x = pos_r[1]
+        y = pos_r[0]
+
+        pos = (x, y)
 
         if (tuple(pos) in self.room.keys()):
-            if(self.room[pos] == "battle"):
+            if(self.room[pos] == "battle" and self.grid[y][x] == 0):
                 print("battle")
             elif(self.room[pos] == "shop"):
                 print("shop")
 
+        if (self.grid[y][x] == 0):
+            self.grid[y][x] = 2
+            
     # def chanage(self):
     #     self.x = self.player.get_pos()
     #     self.y = self.player.get_pos()
