@@ -27,7 +27,7 @@ class main():
 
         #event_scheduler
         self.event_scheduer = {}
-        
+
         #start
         self.main_loop()
     
@@ -54,6 +54,7 @@ class main():
         os._exit(0)
 
     def player_move(self):
+        self.world.show_map()
         move = questionary.select(
             message="이동 선택하세요",
             choices=self.check_grid
