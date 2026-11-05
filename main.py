@@ -1,8 +1,9 @@
 # import battle.turnManager as turnManager
-# import enemy.enemy as enemy
-# import enemy.enemy_manager as enemy_manager
+import enemy.enemy as enemy
+import enemy.enemy_manager as enemy_manager
 # import enemy.resorce as resorce
 # import event.event as event
+#import battle.turn_manager as turn_manager
 import player.resource.skill_manager as sk
 import map.map as map
 import player.player as player
@@ -18,10 +19,13 @@ class main():
     def __init__(self):
         #generate managers
         self.skill_manager = sk.skill_manager()
-
+        self.enemy_manager = enemy_manager.enemy_manager()
+        # self.turn_manager = turn_manager.TurnManager(self.enemy_manager)
+ 
         #generate player
         self.a = player.player(self.skill_manager)
 
+        #generate map
         self.world = map.field(self.a)
         self.world.generate_room()
 
