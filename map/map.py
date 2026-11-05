@@ -1,8 +1,9 @@
 import random
 
 class field():
-    def __init__(self, player):
+    def __init__(self, player, shop):
         self.player = player
+        self.shop = shop
 
         self.right_able = None
         self.left_able = None
@@ -58,7 +59,8 @@ class field():
             if(self.room[pos] == "battle" and self.grid[y][x] == 0):
                 print("battle")
             elif(self.room[pos] == "shop"):
-                print("shop")
+                print("상점을 발견했습니다")
+                self.shop.shop1()
 
         if (self.grid[y][x] == 0):
             self.grid[y][x] = 2
