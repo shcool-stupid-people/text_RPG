@@ -1,10 +1,15 @@
-import battle.entity_battle as entity
-import random  # noqa: F401
-import time
-import battle.entity_battle as entity_battle
-import player
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으로 import하는 것이 호환되도록
 
-class BattleDisruption:
+from player import player
+from battle import battler
+from battle import entity
+from player.resource import skill_manager
+import random 
+import time
+
+class battle_disruption():
     ''' 중간 연결자 역활을 하는 클래스
     main코드는 이거를 조건으로 사용하여 중단을 시킴 
     entityBattler는 중단 신호를 발생시킴'''
@@ -31,10 +36,10 @@ class TurnManager:
 
         self.turn_flow = []
         self.cnt = 1
-        self.disruption = BattleDisruption()
+        self.disruption = battle_disruption()
         
         self.player = player
-        self.player_battler = entity_battle.PlayerBattler(player, self.disruption)
+        self.player_battler = battler.PlayerBattler(player, self.disruption)
         self.monsters = []
 
 
@@ -61,7 +66,7 @@ class TurnManager:
 
         
     def add_monster(self, monster):
-        monsterBattler = entity_battle.MonsterBattler(monster, self.disruption)
+        monsterBattler = battler.MonsterBattler(monster, self.disruption)
         self.monsters.append(monsterBattler)
 
     def turn_delay(self, delay_time=0.5):
@@ -76,7 +81,8 @@ class TurnManager:
 
 
 if __name__ == "__main__":
-    user = player.player()
+    skill_manager1 = skill_manager.skill_manager()
+    user = player.player(skill_manager1)
     user.name = "홍길동"
     # player.name = input("플레이어의 이름을 입력하세요: ")
     monster = entity.Monster()
