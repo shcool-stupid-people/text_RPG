@@ -1,5 +1,6 @@
 import random
 import player
+import shop
 
 class event():
     def __init__(self):
@@ -11,6 +12,7 @@ class event():
         self.equipment_money = [100,50,-50,-100] #강화 비용
         self.special_list = ["invincible","double_spawn","reset_all_buff"] #스페셜이벤트
         self.player = player.player() #플레이어 호출
+        self.shop = shop.shop() #상점 호출
 
     def drawing_event(self): #뽑기
         result = random.randrange(0,10000)
@@ -28,25 +30,73 @@ class event():
                 self.special_event()
 
     def status_exchange(self):
-        stat = random.choice(self.status_event_list)
+        stat = random.randrange(0,6) #0 = 체력, 1 = 방어력, 2= 마나, 3 = 스피드, 4 = 명중률, 5 = 공격력 
         choice = random.randrange(0,2)
-        if (choice == 0):
-            value1 = random.choice(self.status_const_percent_list)
-            self.player.change_hp(value1)
-            print(f"{stat}가 영구적으로 {value1} 되었습니다.")
+        if (stat == 0): #체력
+            if (choice == 0): 
+                value1 = random.choice(self.status_const_percent_list)
+                player.change_hp(value1)
+                print(f"체력이 영구적으로 {value1}만큼 변동 되었습니다.") 
 
-        else:
-            value2 = random.choice(self.status_percent_list)
-            self.player.change_hp(value2)
-            print(f"{stat}가 일시적으로 {value2} 되었습니다.")
-            #방 이동 만든 후 복구 하는 함수 호출하기
+            else:
+                value2 = random.choice(self.status_percent_list)
+                player.change_hp(value2)
+                print(f"체력이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 1): #방어력
+            if (choice == 0):
+                player.change_armored(value1)
+                print(f"방어력이 영구적으로 {value1}만큼 변동 되었습니다.") 
+
+            else:
+                player.change_armored(value2)
+                print(f"방어력이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 2): #마나
+            if (choice == 0):
+                player.change_mp(value1)
+                print(f"마나가 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_mp(value2)
+                print(f"마나가 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 3): #스피드
+            if (choice == 0):
+                player.change_speed(value1)
+                print(f"스피드가 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_speed(value2)
+                print(f"스피드가 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 4): #명중률
+            if (choice == 0):
+                player.change_accuracy_rate(value1)
+                print(f"명중률이 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_accuracy_rate(value2)
+                print(f"명중률이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 5): #공격력
+            if (choice == 0):
+                player.change_damage(0.1 * value1)
+                print(f"공격력이 영구적으로 {0.1 * value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_damage(0.1 * value2)
+                print(f"공격력이 일시적으로 {0.1 * value2}만큼 변동 되었습니다.")
         
     def equipment_reinforce(self):
         result = random.randrange(0,3)
         if (result == 0):
             rank = random.choice(self.equipment_lv_list) #등급 호출
+            result1 = random.randrange(0,6) #장비 뽑기
+            if (result1 == 0):
+                
             #장비 관련 함수 추가 만들기
-            print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
         elif (result == 1):
             percent = random.choice(self.equipment_reinforce_percent_list) #강화 확률 호출
             #장비 관련 함수 추가 만들기
