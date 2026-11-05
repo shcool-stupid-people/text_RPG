@@ -76,23 +76,6 @@ class TurnManager:
 
 
 if __name__ == "__main__":
-    import sys
-    import os
-
-    # # 1. 현재 파일(main.py)의 절대 경로의 상위 폴더(parent_folder) 경로를 계산합니다.
-    # current_dir = os.path.dirname(os.path.abspath(__file__))
-    # parent_dir = os.path.dirname(current_dir)
-
-    # # 2. 상위 폴더 안에 있는 가져오고 싶은 특정 폴더(uncle_folder)의 경로를 만듭니다.
-    # target_dir = os.path.join(parent_dir, 'player')
-
-    # # 3. 파이썬이 모듈을 찾을 수 있도록 검색 경로(sys.path)에 추가합니다.
-    # if target_dir not in sys.path:
-    #     sys.path.append(target_dir)
-
-    # # 4. 이제 폴더 안의 파일을 자유롭게 임포트할 수 있습니다.
-    # import player
-    # # 또는 from my_module import my_function
     user = player.player()
     user.name = "홍길동"
     # player.name = input("플레이어의 이름을 입력하세요: ")
