@@ -21,12 +21,13 @@ class main():
         self.skill_manager = sk.skill_manager()
         self.enemy_manager = enemy_manager.enemy_manager()
         # self.turn_manager = turn_manager.TurnManager(self.enemy_manager)
- 
+        self.shop = shop.shop()
+
         #generate player
         self.a = player.player(self.skill_manager)
 
         #generate map
-        self.world = map.field(self.a)
+        self.world = map.field(self.a, self.shop)
         self.world.generate_room()
 
         #event_scheduler
