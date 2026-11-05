@@ -1,6 +1,6 @@
 import random
-import player
-import map
+import player.player as player
+import map.map as map
 
 class event():
     def __init__(self):
@@ -115,7 +115,8 @@ class event():
 
 
     def soft_reset(self):
-        pass
+        map.reset()
+        print("층 초기화")
 
     def hard_reset(self):  
         map.room_floor(1)
