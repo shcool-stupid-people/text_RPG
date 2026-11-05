@@ -1,15 +1,18 @@
 import random
 
 class field():
-    def __init__(self, player):
+    def __init__(self, player, shop):
         self.player = player
+        self.shop = shop
 
         self.right_able = None
         self.left_able = None
         self.up_able = None
         self.down_able = None
-
-        self.grid = [
+        
+        self.grid = None
+        
+        self.map1 = [
                     [5, 5, 5, 5, 5, 5],
                     [5, 0, 0, 0, 0, 5],
                     [5, 0, 0, 0, 0, 5],
@@ -18,10 +21,36 @@ class field():
                     [5, 0, 0, 0, 0, 5],
                     [5, 5, 5, 5, 5, 5],
                     ]
+
+        self.map2 = [
+                    [5, 5, 5, 5, 5, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [1, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 5, 5, 5, 5, 5],
+                    ]
+
+
+        self.map3 = [
+                    [5, 5, 5, 5, 5, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [1, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 0, 0, 0, 0, 5],
+                    [5, 5, 5, 5, 5, 5],
+                    ]
+
+        self.maps = [self.map1, self.map2, self.map3]
+        
         self.room_type = ["battle", "shop"]
-        self.room = {}
-        self.enterance = [3,0]
-        self.generate_room()
+    
+        self.room = [{},{},{}]
+        self.room_floor(self.player.get_floor())
+        # self.enterance = [3,0]
+        # self.generate_room()
 
     def show_map(self):
         for i in range(len(self.grid)):
@@ -36,13 +65,29 @@ class field():
                     print(f"{j} ",end="")
             print()
 
-    def generate_room(self):
+    def find_enterence(self):
+        for i in range(len(self.grid)):
+            for j in self.grid[i]:
+                if (j == 1):
+                    return [i, j-1]
+                    
+
+    def room_floor(self, floor):
+        self.grid = self.maps[floor-1]
+        enterance = self.find_enterence()
+        print(enterance)
+        self.player.change_pos(enterance[1], enterance[0])
+
+        if (len(self.room[floor-1]) == 0):
+            self.generate_room(floor-1)
+
+    def generate_room(self, value):
         room_num = random.randint(10, len(self.grid)*len(self.grid[0]) - (len(self.grid[0]) + len(self.grid))*2)
 
         for i in range(room_num):
             room_rand_x = random.randint(1,len(self.grid[0])-1)
             room_rand_y = random.randint(1,len(self.grid)-1)
-            self.room[(room_rand_y, room_rand_x)] = random.choices(self.room_type, weights=[0.8, 0.2])[0] #need to fix same room can exist
+            self.room[value-1][(room_rand_y, room_rand_x)] = random.choices(self.room_type, weights=[0.8, 0.2])[0] #need to fix same room can exist
     
     def get_enterance(self):
         return self.enterance
@@ -54,11 +99,12 @@ class field():
 
         pos = (x, y)
 
-        if (tuple(pos) in self.room.keys()):
+        if (pos in self.room[self.player.get_floor()].keys()):
             if(self.room[pos] == "battle" and self.grid[y][x] == 0):
                 print("battle")
             elif(self.room[pos] == "shop"):
-                print("shop")
+                print("상점을 발견했습니다")
+                self.shop.shop1()
 
         if (self.grid[y][x] == 0):
             self.grid[y][x] = 2

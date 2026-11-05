@@ -1,5 +1,6 @@
 import random
 import player
+import map
 
 class event():
     def __init__(self):
@@ -28,18 +29,63 @@ class event():
                 self.special_event()
 
     def status_exchange(self):
-        stat = random.choice(self.status_event_list)
+        stat = random.randrange(0,6) #0 = 체력, 1 = 방어력, 2= 마나, 3 = 스피드, 4 = 명중률, 5 = 공격력 
         choice = random.randrange(0,2)
-        if (choice == 0):
-            value1 = random.choice(self.status_const_percent_list)
-            self.player.change_hp(value1)
-            print(f"{stat}가 영구적으로 {value1} 되었습니다.")
+        if (stat == 0): #체력
+            if (choice == 0): 
+                value1 = random.choice(self.status_const_percent_list)
+                player.change_hp(value1)
+                print(f"체력이 영구적으로 {value1}만큼 변동 되었습니다.") 
 
-        else:
-            value2 = random.choice(self.status_percent_list)
-            self.player.change_hp(value2)
-            print(f"{stat}가 일시적으로 {value2} 되었습니다.")
-            #방 이동 만든 후 복구 하는 함수 호출하기
+            else:
+                value2 = random.choice(self.status_percent_list)
+                player.change_hp(value2)
+                print(f"체력이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 1): #방어력
+            if (choice == 0):
+                player.change_armored(value1)
+                print(f"방어력이 영구적으로 {value1}만큼 변동 되었습니다.") 
+
+            else:
+                player.change_armored(value2)
+                print(f"방어력이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 2): #마나
+            if (choice == 0):
+                player.change_mp(value1)
+                print(f"마나가 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_mp(value2)
+                print(f"마나가 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 3): #스피드
+            if (choice == 0):
+                player.change_speed(value1)
+                print(f"스피드가 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_speed(value2)
+                print(f"스피드가 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 4): #명중률
+            if (choice == 0):
+                player.change_accuracy_rate(value1)
+                print(f"명중률이 영구적으로 {value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_accuracy_rate(value2)
+                print(f"명중률이 일시적으로 {value2}만큼 변동 되었습니다.")
+
+        elif (stat == 5): #공격력
+            if (choice == 0):
+                player.change_damage(0.1 * value1)
+                print(f"공격력이 영구적으로 {0.1 * value1}만큼 변동 되었습니다.") 
+        
+            else:
+                player.change_damage(0.1 * value2)
+                print(f"공격력이 일시적으로 {0.1 * value2}만큼 변동 되었습니다.")
         
     def equipment_reinforce(self):
         result = random.randrange(0,3)
@@ -69,10 +115,14 @@ class event():
 
 
     def soft_reset(self):
-        pass #맵 나와야 제작 가능
+        pass
 
-    def hard_reset(self):
-        pass #맵 나와야 제작 가능
+    def hard_reset(self):  
+        map.room_floor(1)
+        player.change_floor(1)
+        map.reset() #함수 미구현
+        print("태초마을")        
+        
 
-test = event()
-test.drawing_event()
+# test = event()
+# test.drawing_event()
