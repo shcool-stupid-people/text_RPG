@@ -1,42 +1,74 @@
 import random
 import questionary as qu
-import player
+from player.player import player
+class shop():
 
-class shop:
-
-  class item:
-    def __init__(self, name, price, tear):
-      self.name = name
-      self.price = price
-      self.tear = tear
-
+  class item():
+    
+    def __init__(self, player):
+      self.player1 = player
+      self.name = None
+      self.price = None 
+      self.tear = None
   class weapon(item):
+    
     def __init__(self, name, price, damage, tear="일반"):
       super().__init__(name, price, tear)
       self.damage = damage
       self.category = "무기"
       self.level = 1
 
+    def get_category(self):
+      return self.category
+    def get_level(self):
+      return self.level
+    def set_tear(self):
+      return self.tear
+
   class armor(item):
-    def __init__(self, name, price, defense, tear="일반"):
+
+    def __init__(self, name, price, tear="일반"):
       super().__init__(name, price, tear)
-      self.defense = defense
+      self.tear = tear
       self.category = "방어구"
       self.level = 1
 
+    def get_category(self):
+      return self.category
+    def get_level(self):
+      return self.level
+    def set_tear(self):
+      return self.tear
+
   class att_potion(item):
+
     def __init__(self, name, price, effect, tear="일반"):
       super().__init__(name, price, tear)
       self.effect = effect
       self.category = "포션"
       self.target = "상대"
 
+    def get_category(self):
+      return self.category
+    def get_effect(self):
+      return self.effect
+    def set_target(self):
+      return self.target
+
   class heal_potion(item):
+
     def __init__(self, name, price, effect, tear="일반"):
       super().__init__(name, price, tear)
       self.effect = effect
       self.category = "포션"
       self.target = "자신"
+
+    def get_category(self):
+          return self.category
+    def get_effect(self):
+      return self.effect
+    def set_target(self):
+      return self.target
 
   def __init__(self, tool_name, tool_lev, coin, tear="일반"):
     self.att_tool_name = tool_name
@@ -47,18 +79,18 @@ class shop:
     self.weapon_list = [
         self.weapon("마법지팡이", 1000, 10),
         self.weapon("검", 1000, 15),
-        self.weapon("창", 1000, 20),
+        self.weapon("창", 1000, 20)
     ]
     self.defense_list = [
         self.armor("방패", 1000, 10),
         self.armor("갑옷", 1000, 20),
-        self.armor("투구", 1000, 5),
+        self.armor("투구", 1000, 5)
     ]
     self.potion_list = [
         self.att_potion("공격포션", 1000, -20),
         self.att_potion("엄청난 공격포션", 2000, -40),
         self.heal_potion("회복포션", 1000, 20),
-        self.heal_potion("엄청난 회복포션", 2000, 40),
+        self.heal_potion("엄청난 회복포션", 2000, 40)
     ]
 
   def rainforce(self):
@@ -164,20 +196,17 @@ class shop:
           "구매할 아이템을 선택해주세요",
           choices=["무기", "방어구", "포션", "나가기"],
       ).ask()
-
       if choices == "무기":
         qu.select(
             "구매할 아이템을 선택해주세요",
             choices=["마법지팡이", "검", "창", "나가기"],
         ).ask()
-
       elif choices == "방어구":
         qu.select(
             "구매할 아이템을 선택해주세요",
             choices=["방패", "갑옷", "투구", "나가기"],
         ).ask()
         print("방어구 메뉴입니다")
-
       elif choices == "포션":
         print("포션을 판매합니다")
         choices = qu.select(
@@ -190,22 +219,66 @@ class shop:
                 "나가기",
             ]
         ).ask()
-
         if choices == "공격포션":
-          choice = qu.select("구매하실 개수를 선택해주세요", choices=[1, 2, 3, 4, 5]).ask()
-          alpha = int(choice)
-          total_price = alpha * self.potion_list[0].price
+          b=int(input("몇 개를 구매하시겠습니까?: "))
+          total_price = b * self.potion_list[0].price
           confirm = qu.select(
-              f"총 {alpha}개를 {total_price}원에 구매하시겠습니까?",
+              f"총 {b}개를 {total_price}원에 구매하시겠습니까?",
               choices=["예", "아니요"],
           ).ask()
-          
           if confirm == "예":
             if total_price <= self.money:
-              print(f"공격포션 {alpha}개를 구매하셨습니다")
+              print(f"공격포션 {b}개를 구매하셨습니다")
+              for i in range(b):
+                self.player.add_inventory(self.potion_list[0])
               self.money -= total_price
             else:
               print("잔액이 부족합니다!")
+
+        elif choices == "엄청난 공격포션":
+          b=int(input("몇 개를 구매하시겠습니까?: "))
+          total_price = b * self.potion_list[1].price
+          confirm = qu.select(
+              f"총 {b}개를 {total_price}원에 구매하시겠습니까?",
+              choices=["예", "아니요"],
+          ).ask()
+          if confirm == "예":
+            if total_price <= self.money:
+              print(f"엄청난 공격포션 {b}개를 구매하셨습니다")
+              self.money -= total_price
+            else:
+              print("잔액이 부족합니다!")
+
+        elif choices == "엄청난 회복포션":
+          b=int(input("몇 개를 구매하시겠습니까?: "))
+          total_price = b * self.potion_list[3].price
+          confirm = qu.select(
+              f"총 {b}개를 {total_price}원에 구매하시겠습니까?",
+              choices=["예", "아니요"],
+          ).ask()
+          if confirm == "예":
+            if total_price <= self.money:
+              print(f"엄청난 회복포션 {b}개를 구매하셨습니다")
+              for i in range(b):
+                self.player.add_inventory(self.potion_list[3])
+              self.money -= total_price
+            else:
+              print("잔액이 부족합니다!")
+
+        elif choices == "치유포션":
+          b=int(input("몇 개를 구매하시겠습니까?: "))
+          total_price = b * self.potion_list[0].price
+          confirm = qu.select(
+              f"총 {b}개를 {total_price}원에 구매하시겠습니까?",
+              choices=["예", "아니요"],
+          ).ask()
+          if confirm == "예":
+            if total_price <= self.money:
+              print(f"치유포션 {b}개를 구매하셨습니다")
+              self.money -= total_price
+            else:
+              print("잔액이 부족합니다!")
+        
       elif choices == "나가기":
         print("판매를 종료합니다")
         break
@@ -229,5 +302,6 @@ class shop:
 
 
 if __name__ == "__main__":
-  a = shop("검", 1, 100000000, "일반")
-  a.shop1()
+  player = player()
+  shop1 = shop(player)
+  shop1.shop1()
