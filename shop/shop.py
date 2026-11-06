@@ -1,65 +1,15 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으로 import하는 것이 호환되도록
+
 import random
 import questionary as qu
-import player
+import shop.shop_manager as shop_manager
 
 class shop:
-
-  class item:
-    def __init__(self, name, price, tear):
-      self.name = name
-      self.price = price
-      self.tear = tear
-
-  class weapon(item):
-    def __init__(self, name, price, damage, tear="일반"):
-      super().__init__(name, price, tear)
-      self.damage = damage
-      self.category = "무기"
-      self.level = 1
-
-  class armor(item):
-    def __init__(self, name, price, defense, tear="일반"):
-      super().__init__(name, price, tear)
-      self.defense = defense
-      self.category = "방어구"
-      self.level = 1
-
-  class att_potion(item):
-    def __init__(self, name, price, effect, tear="일반"):
-      super().__init__(name, price, tear)
-      self.effect = effect
-      self.category = "포션"
-      self.target = "상대"
-
-  class heal_potion(item):
-    def __init__(self, name, price, effect, tear="일반"):
-      super().__init__(name, price, tear)
-      self.effect = effect
-      self.category = "포션"
-      self.target = "자신"
-
-  def __init__(self, tool_name, tool_lev, coin, tear="일반"):
-    self.att_tool_name = tool_name
-    self.att_tool_Lev = tool_lev
-    self.money = coin
-    self.Tear = tear
-
-    self.weapon_list = [
-        self.weapon("마법지팡이", 1000, 10),
-        self.weapon("검", 1000, 15),
-        self.weapon("창", 1000, 20),
-    ]
-    self.defense_list = [
-        self.armor("방패", 1000, 10),
-        self.armor("갑옷", 1000, 20),
-        self.armor("투구", 1000, 5),
-    ]
-    self.potion_list = [
-        self.att_potion("공격포션", 1000, -20),
-        self.att_potion("엄청난 공격포션", 2000, -40),
-        self.heal_potion("회복포션", 1000, 20),
-        self.heal_potion("엄청난 회복포션", 2000, 40),
-    ]
+  def __init__(self, player):
+    self.shop_manager = shop_manager.shop_manager()
+    self.player = player
 
   def rainforce(self):
     while True:
@@ -166,24 +116,35 @@ class shop:
       ).ask()
 
       if choices == "무기":
-        qu.select(
+        item_list = self.shop_manager.get_weapon_list()
+        weapons = self.selling_list(item_list)
+        
+        buy_item = qu.select(
             "구매할 아이템을 선택해주세요",
-            choices=["마법지팡이", "검", "창", "나가기"],
+            choices=weapons,
         ).ask()
+        self.is_able_buy(buy_item)
 
       elif choices == "방어구":
-        qu.select(
+        item_list = self.shop_manager.get_armor_list()
+        armors = self.selling_list(item_list)
+        
+        buy_item = qu.select(
             "구매할 아이템을 선택해주세요",
-            choices=["방패", "갑옷", "투구", "나가기"],
+            choices=armors,
         ).ask()
-        print("방어구 메뉴입니다")
+        self.is_able_buy(buy_item)
+        
+        
 
       elif choices == "포션":
         print("포션을 판매합니다")
+        # item_list = self.shop_manager.get_potion_list()
+        # potions = self.selling_list(item_list)
+
         choices = qu.select(
             "구매하실 아이템을 선택해주세요",
-            choices=[
-                "공격포션",
+            choices=["공격포션",
                 "엄청난 공격포션",
                 "회복포션",
                 "엄청난 회복포션",
@@ -210,7 +171,25 @@ class shop:
         print("판매를 종료합니다")
         break
 
-  def shop1(self):
+  def selling_list(self, item_list):
+    temp = [
+                qu.Choice(
+                    title=f"{item.name} (가격: {item.price}개)",
+                    value=item
+                )
+                for item in item_list
+              ]
+    temp.append("나가기")
+    return temp
+
+  def is_able_buy(self, for_buy):
+    if (for_buy.price > self.player.get_coin()):
+      print("금액이 부족합니다")
+    else:
+      self.player.change_coin(-for_buy.price)
+      self.player.add_inventory(for_buy)
+
+  def start_shop(self):
     while True:
       choices = qu.select(
           "상점에 오신 것을 환영합니다\n무엇을 하시겠습니까?",
@@ -228,6 +207,3 @@ class shop:
         break
 
 
-if __name__ == "__main__":
-  a = shop("검", 1, 100000000, "일반")
-  a.shop1()

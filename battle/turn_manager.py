@@ -2,12 +2,9 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으로 import하는 것이 호환되도록
 
-from player import player
+
 from battle import battler
-from battle import entity
-from player.resource import skill_manager
-from enemy import enemy
-import random 
+
 import time
 
 class battle_disruption():
@@ -26,8 +23,7 @@ class battle_disruption():
         return self.exit
 
 
-class TurnManager:
-
+class Turn_manager:
     def __init__(self, player):
         '''groups는 
         ((entity.being, entity.being, ...), 
@@ -40,7 +36,7 @@ class TurnManager:
         self.disruption = battle_disruption()
         
         self.player = player
-        self.player_battler = battler.PlayerBattler(player, self.disruption)
+        self.player_battler = battler.Player_battler(player, self.disruption)
         self.monsters = []
 
 
@@ -67,7 +63,7 @@ class TurnManager:
 
         
     def add_monster(self, monster):
-        monsterBattler = battler.MonsterBattler(monster, self.disruption)
+        monsterBattler = battler.Monster_battler(monster, self.disruption)
         self.monsters.append(monsterBattler)
 
     def turn_delay(self, delay_time=0.5):
@@ -81,20 +77,20 @@ class TurnManager:
         time.sleep(delay_time*1.2)
 
 
-if __name__ == "__main__":
-    skill_manager1 = skill_manager.skill_manager()
-    user = player.player(skill_manager1)
-    user.name = "홍길동"
-    # player.name = input("플레이어의 이름을 입력하세요: ")
+# if __name__ == "__main__":
+#     skill_manager1 = skill_manager.skill_manager()
+#     user = player.player(skill_manager1)
+#     user.name = "홍길동"
+#     # player.name = input("플레이어의 이름을 입력하세요: ")
 
-    monster = enemy.enemy("슬라임", [], 50, 10, None)
-    monster.attack_power = 60 # 임시
+#     monster = enemy.enemy("슬라임", [], 50, 10, None)
+#     monster.attack_power = 60 # 임시
 
-    turn_manager = TurnManager(user)
-    turn_manager.add_monster(monster)
+#     turn_manager = Turn_manager(user)
+#     turn_manager.add_monster(monster)
 
-    while True:
-        turn_manager.next_turn()
-        if (turn_manager.disruption.is_exit()):
-            break
-    print("끝남")
+#     while True:
+#         turn_manager.next_turn()
+#         if (turn_manager.disruption.is_exit()):
+#             break
+#     print("끝남")

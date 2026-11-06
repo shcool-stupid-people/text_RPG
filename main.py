@@ -1,13 +1,13 @@
 # import battle.turnManager as turnManager
 import enemy.enemy as enemy
-import enemy.enemy_manager as enemy_manager
+# import enemy.enemy_manager as enemy_manager
 # import enemy.resorce as resorce
 # import event.event as event
-#import battle.turn_manager as turn_manager
+import battle.turn_manager as turn_manager
 import player.resource.skill_manager as sk
 import map.map as map
 import player.player as player
-import shop.shop as shop
+# import shop.shop as shop
 import questionary
 import os
 import random
@@ -19,16 +19,17 @@ class main():
     def __init__(self):
         #generate managers
         self.skill_manager = sk.skill_manager()
-        self.enemy_manager = enemy_manager.enemy_manager()
-        # self.turn_manager = turn_manager.TurnManager(self.enemy_manager)
+        # self.enemy_manager = enemy_manager.enemy_manager()
         
-        self.shop = shop.shop("검", 1, 100000000, "일반")
+        # self.shop = shop.shop("검", 1, 100000000, "일반")
 
         #generate player
         self.a = player.player(self.skill_manager)
+        
+        # self.turn_manager = turn_manager.Turn_manager(self.a)
 
         #generate map
-        self.world = map.field(self.a, self.shop)
+        self.world = map.field(self.a)
         # self.world.generate_room()
 
         #event_scheduler
@@ -46,7 +47,7 @@ class main():
         
         option = questionary.select(
                 message="선택하세요",
-                choices=["이동하기", "인벤토리", "내 정보"]
+                choices=["이동하기", "인벤토리", "내 정보", "끝내기"]
             ).ask()
         if (option == "이동하기"):
             self.player_move()
@@ -54,6 +55,8 @@ class main():
             self.player_inventory()
         elif (option == "내 정보"):
             self.show_info()
+        elif (option == "끝내기"):
+            self.game_over()
 
     def game_over(self):
         print("게임이 종료되었습니다")
@@ -67,7 +70,7 @@ class main():
         ).ask()
 
         if (move == "exit"):
-            self.game_over()
+            pass
         elif (move == "right"):
             self.a.move(1,0)
         elif (move == "left"):
@@ -102,7 +105,7 @@ class main():
             pass
 
         else:
-            cat = option.get_catagory()
+            cat = option.category
             if (cat == "무기"):
                 print("무기를 장착했습니다")
                 self.a.change_epuip_weapon(option)

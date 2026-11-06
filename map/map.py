@@ -1,9 +1,15 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으로 import하는 것이 호환되도록
+
 import random
+import enemy.enemy_manager as enemy_manager
+import shop.shop as shop
+import battle.turn_manager as turn_manager
 
 class field():
-    def __init__(self, player, shop):
+    def __init__(self, player):
         self.player = player
-        self.shop = shop
 
         self.right_able = None
         self.left_able = None
@@ -49,10 +55,17 @@ class field():
     
         self.room = [{},{},{}]
         self.room_floor(self.player.get_floor())
-        # self.enterance = [3,0]
-        # self.generate_room()
+
+        self.enemy_manager = enemy_manager.enemy_manager()
+        self.turn_manager = turn_manager.Turn_manager(self.player)
+
+        self.shop = shop.shop(self.player)
+
 
     def show_map(self):
+        # print(self.room[0])
+        # print(self.room[1])
+        # print(self.room[2])
         for i in range(len(self.grid)):
             for j in self.grid[i]:
                 if (j == 5):
@@ -75,7 +88,7 @@ class field():
     def room_floor(self, floor):
         self.grid = self.maps[floor-1]
         enterance = self.find_enterence()
-        print(enterance)
+        # print(enterance)
         self.player.change_pos(enterance[1], enterance[0])
 
         if (len(self.room[floor-1]) == 0):
@@ -87,8 +100,8 @@ class field():
         for i in range(room_num):
             room_rand_x = random.randint(1,len(self.grid[0])-1)
             room_rand_y = random.randint(1,len(self.grid)-1)
-            self.room[value-1][(room_rand_y, room_rand_x)] = random.choices(self.room_type, weights=[0.8, 0.2])[0] #need to fix same room can exist
-    
+            self.room[value][(room_rand_y, room_rand_x)] = random.choices(self.room_type, weights=[0.8, 0.2])[0] #need to fix same room can exist
+
     def get_enterance(self):
         return self.enterance
     
@@ -99,19 +112,25 @@ class field():
 
         pos = (x, y)
 
-        if (pos in self.room[self.player.get_floor()].keys()):
-            if(self.room[pos] == "battle" and self.grid[y][x] == 0):
+        if (pos in self.room[self.player.get_floor()-1].keys()):
+            if(self.room[self.player.get_floor()-1][pos] == "battle" and self.grid[y][x] == 0):
                 print("battle")
-            elif(self.room[pos] == "shop"):
+                self.battle_room()
+            elif(self.room[self.player.get_floor()-1][pos] == "shop"):
                 print("상점을 발견했습니다")
-                self.shop.shop1()
+                self.shop.start_shop()
 
         if (self.grid[y][x] == 0):
             self.grid[y][x] = 2
-            
-    # def chanage(self):
-    #     self.x = self.player.get_pos()
-    #     self.y = self.player.get_pos()
+
+    def battle_room(self):
+        self.turn_manager.add_monster(self.enemy_manager.select_enemy(self.player.get_floor()))
+        while (1):
+            self.turn_manager.next_turn()
+            if (self.turn_manager.disruption.is_exit()):
+                break
+        print("종료")
+
 
     def check_grid(self):
         pos = self.player.get_pos()

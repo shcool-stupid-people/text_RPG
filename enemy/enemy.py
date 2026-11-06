@@ -1,14 +1,15 @@
 import random
 
 class enemy():
-    def __init__(self,name, skill, hp, gold, drops):
+    def __init__(self, name, skill, hp, gold, drops):
         self.probability_list = []
+
         self.name = name
         self.skill_list = skill
         self.max_hp = hp
         self.hp = hp
-
         self.gold = gold
+        
         self.drops = [] if drops is None else drops
         self.enemy_action_percent()
 

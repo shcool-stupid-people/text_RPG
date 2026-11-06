@@ -3,9 +3,8 @@ import time
 import questionary
 from questionary import Choice
 
-class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)를 반환하는 함수를 요청
+class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)를 반환하는 함수를 요청
     '''전투 시 생성하여 전투를 지속하는 객체(한 엔티티 당 하나)'''
-    
     def __init__(self, obj, disruption):
         self.obj = obj
         self.disruption = disruption
@@ -17,14 +16,14 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
             return
 
     def attack(self, target, damage):
-        print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
+        print(f"{self.obj.get_name()}이(는) {target.obj.get_name()}을(를) 공격했다.")
         target.on_hit(damage)
         print(
-            f"{self.obj.name}의 체력: {self.get_hp()}, "
-            f"{target.obj.name}의 체력: {target.get_hp()}\n"
+            f"{self.obj.get_name()}의 체력: {self.get_hp()}, "
+            f"{target.obj.get_name()}의 체력: {target.get_hp()}\n"
         )
         if (target.is_death()):
-            print(f"{target.obj.name}이(가) 죽었습니다.")
+            print(f"{target.obj.get_name()}이(가) 죽었습니다.")
             self.disruption.exit_battle()
         
     def on_hit(self, damage):
@@ -39,8 +38,7 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
     def get_hp(self):
         return self.obj.hp
 
-class MonsterBattler(EntityBattler):
-
+class Monster_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
             return
@@ -66,7 +64,7 @@ class MonsterBattler(EntityBattler):
     def get_hp(self):
         return self.obj.get_hp()
 
-class PlayerBattler(EntityBattler):
+class Player_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
             return
@@ -101,7 +99,7 @@ class PlayerBattler(EntityBattler):
         self.disruption.exit_battle()
 
 
-    def select_target(self, battler_groups) -> EntityBattler:
+    def select_target(self, battler_groups) -> Entity_battler:
         selection = []
         for i in range(len(battler_groups)):
             selection.append(Choice(battler_groups[i].obj.name, i))

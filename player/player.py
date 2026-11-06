@@ -1,5 +1,7 @@
 class player():
     def __init__(self, skill_manager):
+        self.name = "player"
+
         self.hp = 100
         self.max_hp = 100
         self.mp = 100
@@ -25,7 +27,9 @@ class player():
         self.skill_possess = []
 
         self.skill_manager = skill_manager
-
+    def get_name(self):
+        return self.name
+    
     def get_floor(self):
         return self.floor
 

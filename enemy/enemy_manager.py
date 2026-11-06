@@ -2,8 +2,7 @@ import json
 import os
 import random
 
-import enemy
-
+from enemy import enemy as Enemy
 
 class enemy_manager:
     def __new__(cls, *args, **kwargs):
@@ -50,13 +49,15 @@ class enemy_manager:
             raise ValueError(f"{floor}층에 해당하는 적 데이터가 없습니다!")
 
         selected_enemy = random.choice(self.data_list[floor - 1])
+        print(selected_enemy)
         return self.generate_enemy(selected_enemy)
 
     def generate_enemy(self, enemy_data):
-        return enemy.enemy(
+        return Enemy.enemy(
             name=enemy_data["name"],
             skill=enemy_data.get("skill", []),
             hp=enemy_data["hp"],
             gold=enemy_data.get("gold", 0),
-            drops=enemy_data.get("drops", []),
+            drops=enemy_data.get("drops", [])
         )
+       
