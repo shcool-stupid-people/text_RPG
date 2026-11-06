@@ -11,6 +11,8 @@ class player():
 
         self.coin = 100
 
+        self.floor = 1
+
         self.equipment_weapon = None
         self.equipment_armor = None
 
@@ -24,6 +26,12 @@ class player():
 
         self.skill_manager = skill_manager
 
+    def get_floor(self):
+        return self.floor
+
+    def change_floor(self, value):
+        self.floor = value
+        
     def get_hp(self):
         return self.hp
 

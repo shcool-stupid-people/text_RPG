@@ -5,14 +5,12 @@ import player
 class shop:
 
   class item:
-
     def __init__(self, name, price, tear):
       self.name = name
       self.price = price
       self.tear = tear
 
   class weapon(item):
-
     def __init__(self, name, price, damage, tear="일반"):
       super().__init__(name, price, tear)
       self.damage = damage
@@ -20,7 +18,6 @@ class shop:
       self.level = 1
 
   class armor(item):
-
     def __init__(self, name, price, defense, tear="일반"):
       super().__init__(name, price, tear)
       self.defense = defense
@@ -28,7 +25,6 @@ class shop:
       self.level = 1
 
   class att_potion(item):
-
     def __init__(self, name, price, effect, tear="일반"):
       super().__init__(name, price, tear)
       self.effect = effect
@@ -36,7 +32,6 @@ class shop:
       self.target = "상대"
 
   class heal_potion(item):
-
     def __init__(self, name, price, effect, tear="일반"):
       super().__init__(name, price, tear)
       self.effect = effect
@@ -169,17 +164,20 @@ class shop:
           "구매할 아이템을 선택해주세요",
           choices=["무기", "방어구", "포션", "나가기"],
       ).ask()
+
       if choices == "무기":
         qu.select(
             "구매할 아이템을 선택해주세요",
             choices=["마법지팡이", "검", "창", "나가기"],
         ).ask()
+
       elif choices == "방어구":
         qu.select(
             "구매할 아이템을 선택해주세요",
             choices=["방패", "갑옷", "투구", "나가기"],
         ).ask()
         print("방어구 메뉴입니다")
+
       elif choices == "포션":
         print("포션을 판매합니다")
         choices = qu.select(
@@ -192,6 +190,7 @@ class shop:
                 "나가기",
             ]
         ).ask()
+
         if choices == "공격포션":
           choice = qu.select("구매하실 개수를 선택해주세요", choices=[1, 2, 3, 4, 5]).ask()
           alpha = int(choice)
@@ -200,6 +199,7 @@ class shop:
               f"총 {alpha}개를 {total_price}원에 구매하시겠습니까?",
               choices=["예", "아니요"],
           ).ask()
+          
           if confirm == "예":
             if total_price <= self.money:
               print(f"공격포션 {alpha}개를 구매하셨습니다")

@@ -90,8 +90,11 @@ class event():
         result = random.randrange(0,3)
         if (result == 0):
             rank = random.choice(self.equipment_lv_list) #등급 호출
+            result1 = random.randrange(0,6) #장비 뽑기
+            if (result1 == 0):
+                
             #장비 관련 함수 추가 만들기
-            print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
         elif (result == 1):
             percent = random.choice(self.equipment_reinforce_percent_list) #강화 확률 호출
             #장비 관련 함수 추가 만들기
