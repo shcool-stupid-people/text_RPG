@@ -6,6 +6,7 @@ from player import player
 from battle import battler
 from battle import entity
 from player.resource import skill_manager
+from enemy import enemy
 import random 
 import time
 
@@ -85,7 +86,8 @@ if __name__ == "__main__":
     user = player.player(skill_manager1)
     user.name = "홍길동"
     # player.name = input("플레이어의 이름을 입력하세요: ")
-    monster = entity.Monster()
+
+    monster = enemy.enemy("슬라임", [], 50, 10, None)
     monster.attack_power = 60 # 임시
 
     turn_manager = TurnManager(user)

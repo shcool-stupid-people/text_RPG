@@ -31,8 +31,8 @@ class enemy():
         """확률 리스트에서 스킬 하나를 무작위로 뽑아 사용"""
         if not self.skill_list:
             # 스킬이 없을 경우 기본 공격 예외 처리
-            print(f"{self.name}의 기본 공격!")
-            return {"name": "기본 공격", "damage": 5}
+            # print(f"{self.name}의 기본 공격!")
+            return {"name": "기본 공격", "damage": self.attack_power}
 
         select_idx = random.choice(self.probability_list)
         selected_skill = self.skill_list[select_idx]

@@ -1,5 +1,3 @@
-# 플레이어 행동과 죽는거 만들기(action을 못 하도록)
-
 import random
 import time
 import questionary
@@ -17,8 +15,6 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
         '''여기서 입력받는건 전부 베틀러임'''
         if(self.is_death()):
             return
-    # def attack(self, target_battler):
-    #     self.obj.attack(target_battler.obj)
 
     def attack(self, target, damage):
         print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
@@ -34,9 +30,6 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
     def on_hit(self, damage):
         self.obj.on_hit(damage)
 
-    def on_death(self):
-        self.obj.on_death()
-
     def is_death(self):
         return self.obj.is_death()
 
@@ -47,13 +40,31 @@ class EntityBattler: # 플레이어와 적 담당자에게 스크립트(대사)�
         return self.obj.hp
 
 class MonsterBattler(EntityBattler):
+
     def action(self, player, battler_groups):
         if (self.is_death()): 
             return
         target = player
-        rand = random.randint(120, 200)
-        time.sleep(rand/100)
-        self.attack(target, self.get_attack_power())
+        # rand = random.randint(120, 200)
+        # time.sleep(rand/100)
+        skill = self.get_skill()
+        print(f"{self.obj.name}은(는) {skill["name"]}을(를) 시전했다!")
+        self.attack(target, skill["damage"])
+
+    def get_skill(self):
+        return self.obj.use_skill()
+    
+    def on_hit(self, damage):
+        self.obj.take_damage(damage)
+
+    def is_death(self):
+        return not(self.obj.is_alive())
+
+    def get_attack_power(self):
+        return self.obj.get_damage()
+    
+    def get_hp(self):
+        return self.obj.get_hp()
 
 class PlayerBattler(EntityBattler):
     def action(self, player, battler_groups):
@@ -118,9 +129,6 @@ class PlayerBattler(EntityBattler):
         self.obj.change_hp(-damage)
         # if (self.is_death()):
         #     self.disruption.exit_battle()
-
-    def on_death(self):
-        self.obj.on_death()
 
     def is_death(self):
         return self.obj.get_hp() <= 0
