@@ -19,19 +19,14 @@ class main():
     def __init__(self):
         #generate managers
         self.skill_manager = sk.skill_manager()
-        # self.enemy_manager = enemy_manager.enemy_manager()
-        
-        # self.shop = shop.shop("검", 1, 100000000, "일반")
-
+       
         #generate player
         self.a = player.player(self.skill_manager)
         
-        # self.turn_manager = turn_manager.Turn_manager(self.a)
-
+       
         #generate map
         self.world = map.field(self.a)
-        # self.world.generate_room()
-
+        
         #event_scheduler
         self.event_scheduer = {}
 
@@ -84,11 +79,10 @@ class main():
 
     def player_inventory(self):
         inv = self.a.open_inventory()
-        # inv = {"물약": 1, "칼": 1}
 
         choices = [
                 questionary.Choice(
-                    title=f"{item} (수량: {count}개)",
+                    title=f"{item.name} (수량: {count}개)",
                     value=item
                 )
                 for item, count in inv.items()

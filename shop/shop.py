@@ -5,6 +5,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으�
 import random
 import questionary as qu
 import shop.shop_manager as shop_manager
+import copy
 
 class shop:
   def __init__(self, player):
@@ -174,7 +175,7 @@ class shop:
   def selling_list(self, item_list):
     temp = [
                 qu.Choice(
-                    title=f"{item.name} (가격: {item.price}개)",
+                    title=f"{item.name} (가격: {item.price}원)",
                     value=item
                 )
                 for item in item_list
@@ -187,8 +188,29 @@ class shop:
       print("금액이 부족합니다")
     else:
       self.player.change_coin(-for_buy.price)
+      for_buy = copy.deepcopy(for_buy)
       self.player.add_inventory(for_buy)
 
+  def buy(self):
+    temp = [
+              qu.Choice(
+                  title=f"{item.name} (가격: {item.price}원)",
+                  value=item
+              )
+              for item in self.player.open_inventory()
+            ]
+    temp.append("나가기")
+    selected = qu.select(
+                  "판매할 아이템을 선택해주세요",
+                choices=temp
+              ).ask()
+    if (selected == "나가기"):
+      pass
+
+    else:
+      self.player.change_coin(selected.price)
+      self.player.del_inventory(selected)
+  
   def start_shop(self):
     while True:
       choices = qu.select(
@@ -197,11 +219,15 @@ class shop:
       ).ask()
       if choices == "강화하기":
         self.rainforce()
+
       elif choices == "구매하기":
         print("구매하기를 선택하셨습니다\n")
         self.sell()
+
       elif choices == "판매하기":
         print("판매하기를 선택하셨습니다\n")
+        self.buy()
+
       elif choices == "나가기":
         print("상점을 나갑니다")
         break

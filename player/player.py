@@ -11,7 +11,7 @@ class player():
         
         self.accuracy_rate = 100
 
-        self.coin = 100
+        self.coin = 100000
 
         self.floor = 1
 
@@ -137,7 +137,7 @@ class player():
         return self.inventory
 
     def add_inventory(self, item):
-        if (item in self.inventory and not(item.get_category == "weapon")):  #need to fix
+        if (item in self.inventory and not(item.category == "weapon")):  #need to fix
             self.inventory[item] += 1
 
         elif (item in self.inventory):
@@ -147,12 +147,17 @@ class player():
             self.inventory[item] = 1
 
     def del_inventory(self, item):
-        if (item in self.inventory and not(item.get_category == "weapon")):  #need to fix
-            self.inventory[item] -= 1
+        # if (item in self.inventory and not(item.category == "weapon")):  #need to fix
+        #     self.inventory[item] -= 1
 
+        # elif (item in self.inventory):
+        #     self.inventory[item] -= 1
+        if (item in self.inventory and not(item.category) == "포션"):
+            del self.inventory[item]
+        
         elif (item in self.inventory):
             self.inventory[item] -= 1
-
+      
         else:
             print("item is not exist")
     def get_skill(self):
