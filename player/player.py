@@ -8,10 +8,11 @@ class player():
         self.max_mp = 100
         self.damage = 10
         self.armored = 10
+        self.speed = 100
         
         self.accuracy_rate = 100
 
-        self.coin = 100000
+        self.coin = 1000
 
         self.floor = 1
 
@@ -27,6 +28,13 @@ class player():
         self.skill_possess = []
 
         self.skill_manager = skill_manager
+    
+    def get_speed(self):
+        return self.speed
+
+    def change_speed(self, value):
+        self.speed += value
+    
     def get_name(self):
         return self.name
     
@@ -34,7 +42,7 @@ class player():
         return self.floor
 
     def change_floor(self, value):
-        self.floor = value
+        self.floor += value
         
     def get_hp(self):
         return self.hp

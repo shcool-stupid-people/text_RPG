@@ -2,7 +2,7 @@
 import enemy.enemy as enemy
 # import enemy.enemy_manager as enemy_manager
 # import enemy.resorce as resorce
-# import event.event as event
+import event.event as event
 import battle.turn_manager as turn_manager
 import player.resource.skill_manager as sk
 import map.map as map
@@ -19,23 +19,25 @@ class main():
     def __init__(self):
         #generate managers
         self.skill_manager = sk.skill_manager()
-       
         #generate player
         self.a = player.player(self.skill_manager)
-        
        
         #generate map
         self.world = map.field(self.a)
         
         #event_scheduler
-        self.event_scheduer = {}
+        self.event_scheduer = []
+        self.event_manager = event.event(self.a, self.world, self)
 
         #start
         self.main_loop()
     
     def main_loop(self):
         while(1):
+            self.world.check_next_floor()
+            self.world.show_map()
             self.choose_option()
+            self.count_down_event_scheduer()
 
     def choose_option(self):
         self.check_grid = self.world.check_grid()
@@ -44,6 +46,8 @@ class main():
                 message="선택하세요",
                 choices=["이동하기", "인벤토리", "내 정보", "끝내기"]
             ).ask()
+        # self.world.show_map()
+
         if (option == "이동하기"):
             self.player_move()
         elif (option == "인벤토리"):
@@ -58,7 +62,7 @@ class main():
         os._exit(0)
 
     def player_move(self):
-        self.world.show_map()
+        # self.world.show_map()
         move = questionary.select(
             message="이동 선택하세요",
             choices=self.check_grid
@@ -75,7 +79,9 @@ class main():
         elif (move == "down"):
             self.a.move(0,1)
 
+        self.event_manager.drawing_event()
         self.world.check_room()
+
 
     def player_inventory(self):
         inv = self.a.open_inventory()
@@ -111,7 +117,31 @@ class main():
                 option.use_item()
                 self.a.del_inventory(option)
                 
+    def add_event_scheduer(self, name, value):
+        self.event_scheduer.append([name, value, 5])
 
+    def count_down_event_scheduer(self):
+        for i in range(len(self.event_scheduer)):
+            self.event_scheduer[i][-1] -= 1
+            if (self.event_scheduer[0][-1] == 0):
+                self.del_effect(self.event_scheduer[i][0], self.event_scheduer[i][1])
+                self.event_scheduer.remove(self.event_scheduer[i])
+    
+    def del_effect(self, name, v):
+        if (name == "체력"):
+            self.a.change_hp(-v)
+        elif (name == "방어력"):
+            self.a.change_armored(-v)
+        elif (name == "마나"):
+            self.a.change_mp(-v)
+        elif (name == "스피드"):
+            self.a.change_speed(-v)
+        elif (name == "명중률"):
+            self.a.change_accuracy_rate(-v)
+        elif (name == "공격력"):
+            self.a.change_damage(-v)
+        
+        
     def show_info(self):
         print(f"health: [{self.a.get_hp()}/{self.a.get_max_hp()}]")
         print(f"mp: [{self.a.get_mp()}/{self.a.get_max_mp()}]")

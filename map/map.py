@@ -2,10 +2,12 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent)) # main.py기준으로 import하는 것이 호환되도록
 
+import os
 import random
 import enemy.enemy_manager as enemy_manager
 import shop.shop as shop
 import battle.turn_manager as turn_manager
+import copy
 
 class field():
     def __init__(self, player):
@@ -48,8 +50,9 @@ class field():
                     [5, 0, 0, 0, 0, 5],
                     [5, 5, 5, 5, 5, 5],
                     ]
+        self.maps = []
 
-        self.maps = [self.map1, self.map2, self.map3]
+        self.make_maps()
         
         self.room_type = ["battle", "shop"]
     
@@ -61,22 +64,59 @@ class field():
 
         self.shop = shop.shop(self.player)
 
-
     def show_map(self):
-        # print(self.room[0])
-        # print(self.room[1])
-        # print(self.room[2])
-        for i in range(len(self.grid)):
-            for j in self.grid[i]:
-                if (j == 5):
-                    print("==", end="")
-                elif (j == 0):
-                    print("x", end="")
-                elif (j == 2):
-                    print("O", end="")
+        os.system("cls" if os.name == "nt" else "clear")
+        temp = self.player.get_pos()
+        pos_x = temp[1]
+        pos_y = temp[0]
+
+        symbols = {
+            0: "⬜ ",
+            1: "🚪 ",
+            2: "🟩 ",
+            5: "🧱 "
+        }
+
+        print("\n========== DUNGEON ==========\n")
+
+        for y, row in enumerate(self.grid):
+            for x, tile in enumerate(row):
+
+                # 플레이어 위치
+                if (x, y) == (pos_x, pos_y):
+                    print("🧙 ", end="")
+
+                # 맵 타일 출력
                 else:
-                    print(f"{j} ",end="")
+                    print(symbols.get(tile, "❓ "), end="")
+
             print()
+
+        print("\n=============================\n")
+        print("🧙 플레이어  🚪 입구  ⬜ 새로운 방  🟩 방문한 방  🧱 벽")
+
+    def make_maps(self):
+        map1 = copy.deepcopy(self.map1)
+        map2 = copy.deepcopy(self.map2)
+        map3 = copy.deepcopy(self.map3)
+        self.maps = [map1, map2, map3]
+
+    def reset(self):
+        self.make_maps()
+        self.player.change_floor(-1)
+
+
+    def check_next_floor(self):
+        cnt = 0
+        for i in range(len(self.grid)):
+            if (0 in self.grid[i]):
+                return
+            cnt+=1
+
+        if (cnt == len(self.grid)):
+            print("모든 층을 클리어하였습니다")
+            self.player.change_floor(1)
+            self.room_floor(self.player.get_floor())
 
     def find_enterence(self):
         for i in range(len(self.grid)):
@@ -95,7 +135,7 @@ class field():
             self.generate_room(floor-1)
 
     def generate_room(self, value):
-        room_num = random.randint(10, len(self.grid)*len(self.grid[0]) - (len(self.grid[0]) + len(self.grid))*2)
+        room_num = random.randint(15, len(self.grid)*len(self.grid[0]) - (len(self.grid[0]) + len(self.grid))*2)
 
         for i in range(room_num):
             room_rand_x = random.randint(1,len(self.grid[0])-1)

@@ -14,11 +14,25 @@ class shop:
 
   def rainforce(self):
     while True:
+      temp = [
+                qu.Choice(
+                    title=f"{item.name} (가격: {item.tear}원)",
+                    value=item
+                )
+                for item in self.player.open_inventory()
+              ]
+      temp.append("나가기")
+      selected = qu.select(
+                    "강화할 아이템을 선택해주세요",
+                  choices=temp
+                ).ask()
+      
       plus=9 if self.Tear == "전설" else 7 if self.Tear == "영웅" else 5 if self.Tear == "일반" else 4
       if self.att_tool_Lev >= 10:
         choices = qu.select(
             "무기 승급에 도전하시겠습니까?", choices=["승급하기", "나가기"]
         ).ask()
+
         if choices == "승급하기":
           if self.Tear == "일반":
             choices = qu.select(
@@ -30,7 +44,7 @@ class shop:
               if num <= 4:
                 self.money -= 1000 * self.att_tool_Lev
                 self.att_tool_Lev = 1
-                print("장비갘 파괴되었습닠다ㅋ\n\n")
+                print("장비가 파괴되었습닠다ㅋ\n\n")
               elif num <= 40:
                 self.money -= 1000 * self.att_tool_Lev
                 print("승급에 실패하셨습니다\n\n")
@@ -124,7 +138,7 @@ class shop:
             "구매할 아이템을 선택해주세요",
             choices=weapons,
         ).ask()
-        self.is_able_buy(buy_item)
+        self.is_able_sell(buy_item)
 
       elif choices == "방어구":
         item_list = self.shop_manager.get_armor_list()
@@ -134,7 +148,7 @@ class shop:
             "구매할 아이템을 선택해주세요",
             choices=armors,
         ).ask()
-        self.is_able_buy(buy_item)
+        self.is_able_sell(buy_item)
         
         
 
@@ -183,7 +197,7 @@ class shop:
     temp.append("나가기")
     return temp
 
-  def is_able_buy(self, for_buy):
+  def is_able_sell(self, for_buy):
     if (for_buy.price > self.player.get_coin()):
       print("금액이 부족합니다")
     else:
