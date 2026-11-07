@@ -96,41 +96,22 @@ class event():
         
     def equipment_reinforce(self):
         result = random.randrange(0,3)
+
         if (result == 0):
             rank = random.choice(self.equipment_lv_list) #등급 호출
-            result1 = random.randrange(0,6) #장비 뽑기 0 = 지팡이, 1 = 검, 2 = 창, 3 = 방패, 4 = 갑옷, 5 = 투구
-            if (result1 == 0): #지팡이
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-            elif (result1 == 1): #검
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-            elif (result1 == 2): #창
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-            elif (result1 == 3): #방패
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-            elif (result1 == 4): #갑옷
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-            elif (result1 == 5): #투구
-                self.level = self.level + rank
-                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
-
-        elif (result == 1):
-            percent = random.choice(self.equipment_reinforce_percent_list) #강화 확률 호출
-            #장비 관련 함수 추가 만들기
-            print(f"장비가 {percent}확률만큼 조정됩니다.")
-        else:
-            price = random.choice(self.equipment_money) #강화 비용 호출
-            #장비 관련 함수 추가 만들기
-            print(f"강화 비용이 {price}% 조정됩니다.")
+            key = self.player.open_inventory()
+            item_list = list(key.keys())
+            dice = random.randrange(0,len(key))
+            item_list[dice].level += rank
+            print(f"{item_list[dice].name}가 {rank}만큼 변동되었습니다.")
+        # elif (result == 1):
+        #     percent = random.choice(self.equipment_reinforce_percent_list) #강화 확률 호출
+        #     #장비 관련 함수 추가 만들기
+        #     print(f"장비가 {percent}확률만큼 조정됩니다.")
+        # else:
+        #     price = random.choice(self.equipment_money) #강화 비용 호출
+        #     #장비 관련 함수 추가 만들기
+        #     print(f"강화 비용이 {price}% 조정됩니다.")
 
     def special_event(self): 
         result = random.choice(self.special_list)
