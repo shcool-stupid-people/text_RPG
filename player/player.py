@@ -12,7 +12,7 @@ class player():
         
         self.accuracy_rate = 100
 
-        self.coin = 1000
+        self.coin = 10000
 
         self.floor = 1
 
@@ -148,12 +148,12 @@ class player():
     def open_inventory(self):
         return self.inventory
 
-    def add_inventory(self, item):
+    def add_inventory(self, item, value=1):
         if (item in self.inventory and not(item.category == "weapon")):  #need to fix
-            self.inventory[item] += 1
+            self.inventory[item] += value
 
         elif (item in self.inventory):
-            self.inventory[item] += 1
+            self.inventory[item] += value
 
         else:
             self.inventory[item] = 1
@@ -164,10 +164,13 @@ class player():
 
         # elif (item in self.inventory):
         #     self.inventory[item] -= 1
+        if (self.inventory[item] == 0):
+            del self.inventory[item]
+            
         if (item in self.inventory and not(item.category) == "포션"):
             del self.inventory[item]
         
-        elif (item in self.inventory):
+        elif (item in self.inventory and self.inventory[item] != 0):
             self.inventory[item] -= 1
       
         else:

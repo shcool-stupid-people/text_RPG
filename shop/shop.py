@@ -154,36 +154,35 @@ class shop:
 
       elif choices == "포션":
         print("포션을 판매합니다")
-        # item_list = self.shop_manager.get_potion_list()
-        # potions = self.selling_list(item_list)
+        item_list = self.shop_manager.get_potion_list()
+        potions = self.selling_list(item_list)
 
         choices = qu.select(
             "구매하실 아이템을 선택해주세요",
-            choices=["공격포션",
-                "엄청난 공격포션",
-                "회복포션",
-                "엄청난 회복포션",
-                "나가기",
-            ]
+            choices=potions
         ).ask()
 
-        if choices == "공격포션":
-          choice = qu.select("구매하실 개수를 선택해주세요", choices=[1, 2, 3, 4, 5]).ask()
-          alpha = int(choice)
-          total_price = alpha * self.potion_list[0].price
-          confirm = qu.select(
-              f"총 {alpha}개를 {total_price}원에 구매하시겠습니까?",
-              choices=["예", "아니요"],
-          ).ask()
-          
-          if confirm == "예":
-            if total_price <= self.money:
-              print(f"공격포션 {alpha}개를 구매하셨습니다")
-              self.money -= total_price
-            else:
-              print("잔액이 부족합니다!")
+        if choices == "나가기":
+                print("판매를 종료합니다")
+                break
+        
+        choice = qu.select("구매하실 개수를 선택해주세요", choices=["1", "2", "3", "4", "5"]).ask()
+        alpha = int(choice)
+        total_price = alpha * choices.price
+        confirm = qu.select(
+            f"총 {alpha}개를 {total_price}원에 구매하시겠습니까?",
+            choices=["예", "아니요"],
+        ).ask()
+        
+        if confirm == "예":
+          if total_price <= self.player.get_coin():
+            print(f"{choices.name} {alpha}개를 구매하셨습니다")
+            # self.money -= total_price
+            self.player.change_coin(-total_price)
+            self.player.add_inventory(choices, alpha)
+          else:
+            print("잔액이 부족합니다!")
       elif choices == "나가기":
-        print("판매를 종료합니다")
         break
 
   def selling_list(self, item_list):

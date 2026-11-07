@@ -118,7 +118,7 @@ class main():
                 self.a.change_epuip_armor(option)
             elif (cat == "포션"):
                 print("아이템을 사용했습니다")
-                option.use_item()
+                option.use_item(self.a)
                 self.a.del_inventory(option)
                 
     def add_event_scheduer(self, name, value):

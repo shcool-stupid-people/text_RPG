@@ -32,6 +32,18 @@ class heal_potion(item):
         self.category = "포션"
         self.target = "자신"
 
+    def use_item(self, player):
+        player.change_hp(self.effect)
+
+class mp_potion(item):
+    def __init__(self, name, price, effect, tear="일반"):
+        super().__init__(name, price, tear)
+        self.effect = effect
+        self.category = "포션"
+        self.target = "자신"
+
+    def use_item(self, player):
+        player.change_hp(self.effect)
     
 
 class shop_manager():
@@ -53,6 +65,8 @@ class shop_manager():
             att_potion("엄청난 공격포션", 2000, -40),
             heal_potion("회복포션", 1000, 20),
             heal_potion("엄청난 회복포션", 2000, 40),
+            heal_potion("마나포션", 1000, 20),
+            heal_potion("엄청난 마나포션", 2000, 40),
         ]
     def get_weapon_list(self):
         return self.weapon_list
