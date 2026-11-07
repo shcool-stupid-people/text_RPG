@@ -1,16 +1,11 @@
-# import battle.turnManager as turnManager
 import enemy.enemy as enemy
-# import enemy.enemy_manager as enemy_manager
-# import enemy.resorce as resorce
 import event.event as event
 import battle.turn_manager as turn_manager
 import player.resource.skill_manager as sk
 import map.map as map
 import player.player as player
-# import shop.shop as shop
 import questionary
 import os
-import random
 
 
 #희찬이가 요청하는 사항
@@ -50,13 +45,20 @@ class main():
 
         if (option == "이동하기"):
             self.player_move()
+            # os.system("cls" if os.name == "nt" else "clear")
+
         elif (option == "인벤토리"):
             self.player_inventory()
+            # os.system("cls" if os.name == "nt" else "clear")
+
         elif (option == "내 정보"):
+            # os.system("cls" if os.name == "nt" else "clear")
             self.show_info()
+    
         elif (option == "끝내기"):
             self.game_over()
-
+            # os.system("cls" if os.name == "nt" else "clear")
+    
     def game_over(self):
         print("게임이 종료되었습니다")
         os._exit(0)
@@ -78,9 +80,11 @@ class main():
             self.a.move(0,-1)
         elif (move == "down"):
             self.a.move(0,1)
-
-        self.event_manager.drawing_event()
-        self.world.check_room()
+            
+        
+        if (self.world.check_room()):
+            self.event_manager.drawing_event()
+        
 
 
     def player_inventory(self):
@@ -121,19 +125,23 @@ class main():
         self.event_scheduer.append([name, value, 5])
 
     def count_down_event_scheduer(self):
-        for i in range(len(self.event_scheduer)):
-            self.event_scheduer[i][-1] -= 1
-            if (self.event_scheduer[0][-1] == 0):
+        for i in range(len(self.event_scheduer)-1, -1, -1):
+            print(self.event_scheduer)
+            if (self.event_scheduer[i][-1] == 0):
                 self.del_effect(self.event_scheduer[i][0], self.event_scheduer[i][1])
-                self.event_scheduer.remove(self.event_scheduer[i])
-    
+                self.event_scheduer.pop(i)
+            else:
+                self.event_scheduer[i][-1] -= 1
+
     def del_effect(self, name, v):
         if (name == "체력"):
             self.a.change_hp(-v)
+            self.a.change_max_hp(-v)
         elif (name == "방어력"):
             self.a.change_armored(-v)
         elif (name == "마나"):
             self.a.change_mp(-v)
+            self.a.change_max_mp(-v)
         elif (name == "스피드"):
             self.a.change_speed(-v)
         elif (name == "명중률"):

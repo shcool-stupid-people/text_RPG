@@ -49,25 +49,29 @@ class player():
 
     def change_hp(self, value):
         self.hp += value
+        if (self.max_hp < self.hp):
+            self.hp = self.max_hp
 
     def get_max_hp(self):
         return self.max_hp
 
     def change_max_hp(self, value):
-        self.max_hp = value
+        self.max_hp += value
 
     def get_max_mp(self):
         return self.max_mp
 
     def change_max_mp(self, value):
-        self.max_mp = value
+        self.max_mp += value
 
     def get_mp(self):
         return self.mp
     
     def change_mp(self, value):
         self.mp += value
-
+        if (self.max_mp < self.mp):
+            self.mp = self.max_mp
+    
     def get_accuracy_rate(self):
         return self.accuracy_rate
 

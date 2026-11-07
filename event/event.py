@@ -37,10 +37,12 @@ class event():
         if (stat == 0): #체력
             if (choice == 0): 
                 self.player.change_hp(value1)
+                self.player.change_max_hp(value1)
                 print(f"체력이 영구적으로 {value1}만큼 변동 되었습니다.") 
 
             else:
                 self.player.change_hp(value2)
+                self.player.change_max_hp(value2)
                 self.main.add_event_scheduer("체력", value2)
                 print(f"체력이 일시적으로 {value2}만큼 변동 되었습니다.")
 
@@ -57,10 +59,12 @@ class event():
         elif (stat == 2): #마나
             if (choice == 0):
                 self.player.change_mp(value1)
+                self.player.change_max_mp(value1)
                 print(f"마나가 영구적으로 {value1}만큼 변동 되었습니다.") 
         
             else:
                 self.player.change_mp(value2)
+                self.player.change_max_mp(value2)
                 self.main.add_event_scheduer("마나", value2)
                 print(f"마나가 일시적으로 {value2}만큼 변동 되었습니다.")
 

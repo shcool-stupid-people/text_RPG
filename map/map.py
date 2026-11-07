@@ -65,7 +65,7 @@ class field():
         self.shop = shop.shop(self.player)
 
     def show_map(self):
-        os.system("cls" if os.name == "nt" else "clear")
+        # os.system("cls" if os.name == "nt" else "clear")
         temp = self.player.get_pos()
         pos_x = temp[1]
         pos_y = temp[0]
@@ -160,9 +160,13 @@ class field():
                 print("상점을 발견했습니다")
                 self.shop.start_shop()
 
+        if (self.grid[y][x] == 2):
+            return 0
+        
         if (self.grid[y][x] == 0):
             self.grid[y][x] = 2
-
+        return 1
+    
     def battle_room(self):
         self.turn_manager.add_monster(self.enemy_manager.select_enemy(self.player.get_floor()))
         while (1):
