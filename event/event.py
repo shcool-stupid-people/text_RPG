@@ -98,11 +98,31 @@ class event():
         result = random.randrange(0,3)
         if (result == 0):
             rank = random.choice(self.equipment_lv_list) #등급 호출
-            result1 = random.randrange(0,6) #장비 뽑기
-            if (result1 == 0):
-                
-            #장비 관련 함수 추가 만들기
+            result1 = random.randrange(0,6) #장비 뽑기 0 = 지팡이, 1 = 검, 2 = 창, 3 = 방패, 4 = 갑옷, 5 = 투구
+            if (result1 == 0): #지팡이
+                self.level = self.level + rank
                 print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
+            elif (result1 == 1): #검
+                self.level = self.level + rank
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
+            elif (result1 == 2): #창
+                self.level = self.level + rank
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
+            elif (result1 == 3): #방패
+                self.level = self.level + rank
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
+            elif (result1 == 4): #갑옷
+                self.level = self.level + rank
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
+            elif (result1 == 5): #투구
+                self.level = self.level + rank
+                print(f"장비 등급이 {rank}만큼 변화되었습니다.")
+
         elif (result == 1):
             percent = random.choice(self.equipment_reinforce_percent_list) #강화 확률 호출
             #장비 관련 함수 추가 만들기
@@ -115,8 +135,8 @@ class event():
     def special_event(self): 
         result = random.choice(self.special_list)
         if (result == "invincible"):
-            print("무적 상태")  #무적은 개에바아닌가?
-            #방 이동이 몇번 이루어지면
+            print("무적 상태")
+            self.main.add_event_scheduer("방어력", 500000)
             print("무적 해제")
         elif (result == "double_spawn"):
             print("몹 2배 스폰!!")
@@ -125,16 +145,17 @@ class event():
 
 
     def soft_reset(self):
-        self.map.reset() #얘는 층만 초기환데 왜 밑이랑 같은 함수를 가져다씀?
+        self.map.floor_reset()
         print("층 초기화")
 
     def hard_reset(self):  
         self.map.room_floor(1)
         self.player.change_floor(1)
-        self.map.reset() 
+        self.map.reset() #함수 미구현
         print("태초마을")        
 
 
 
 # test = event()
 # test.drawing_event()
+
