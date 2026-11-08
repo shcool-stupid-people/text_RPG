@@ -60,7 +60,6 @@ class field():
         self.room_floor(self.player.get_floor())
 
         self.enemy_manager = enemy_manager.enemy_manager()
-        self.turn_manager = turn_manager.Turn_manager(self.player)
 
         self.shop = shop.shop(self.player)
 
@@ -168,6 +167,7 @@ class field():
         return 1
     
     def battle_room(self):
+        self.turn_manager = turn_manager.Turn_manager(self.player)
         self.turn_manager.add_monster(self.enemy_manager.select_enemy(self.player.get_floor()))
         while (1):
             self.turn_manager.next_turn()
