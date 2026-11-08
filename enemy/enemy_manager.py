@@ -49,7 +49,7 @@ class enemy_manager:
             raise ValueError(f"{floor}층에 해당하는 적 데이터가 없습니다!")
 
         selected_enemy = random.choice(self.data_list[floor - 1])
-        print(selected_enemy)
+        #print(selected_enemy)
         return self.generate_enemy(selected_enemy)
 
     def generate_enemy(self, enemy_data):
