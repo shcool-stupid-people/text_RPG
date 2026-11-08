@@ -1,7 +1,7 @@
 import random
 
 class enemy():
-    def __init__(self, name, skill, hp, gold, drops):
+    def __init__(self, name, skill, hp, gold, drops, accuracy=90):
         self.probability_list = []
 
         self.name = name
@@ -9,7 +9,7 @@ class enemy():
         self.max_hp = hp
         self.hp = hp
         self.gold = gold
-        
+        self.accuracy = accuracy
         self.drops = [] if drops is None else drops
         self.enemy_action_percent()
 
@@ -84,6 +84,9 @@ class enemy():
 
     def get_gold(self):
         return self.gold
+
+    def get_accuracy(self):
+        return self.accuracy
 
     def roll_drops(self):
         """처치 시 호출. 확률(%)에 따라 얻은 부산물 이름 리스트 반환"""

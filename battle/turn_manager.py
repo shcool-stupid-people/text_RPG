@@ -60,7 +60,6 @@ class Turn_manager:
     def turn_process(self, battler):
         battler.action(self.player_battler, self.monsters)
 
-
         
     def add_monster(self, monster):
         monsterBattler = battler.Monster_battler(monster, self.disruption)

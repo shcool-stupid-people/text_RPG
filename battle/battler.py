@@ -16,15 +16,24 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
             return
 
     def attack(self, target, damage):
-        print(f"{self.obj.get_name()}이(는) {target.obj.get_name()}을(를) 공격했다.")
-        target.on_hit(damage)
-        print(
-            f"{self.obj.get_name()}의 체력: {self.get_hp()}, "
-            f"{target.obj.get_name()}의 체력: {target.get_hp()}\n"
-        )
-        if (target.is_death()):
-            print(f"{target.obj.get_name()}이(가) 죽었습니다.")
-            self.disruption.exit_battle()
+        print(f"{self.obj.get_name()}은(는) {target.obj.get_name()}을(를) 공격했다.")
+        # 명중률 구현
+        rand = random.randint(1, 100)
+        if (rand <= self.get_accuracy()):
+            target.on_hit(damage)
+            # 체력이 음수로 표시되지 않도록 함
+            my_hp = max(self.get_hp(), 0) 
+            target_hp = max(target.get_hp(), 0)
+            print(
+                "[정보]: ",
+                f"{self.obj.get_name()}의 체력: {my_hp}, "
+                f"{target.obj.get_name()}의 체력: {target_hp}\n"
+            )
+            if (target.is_death()):
+                print(f"{target.obj.get_name()}이(가) 죽었습니다.")
+                self.disruption.exit_battle()
+        else:
+            print(f"...그러나 {self.obj.get_name()}의 공격은 빗나갔다.")
         
     def on_hit(self, damage):
         self.obj.on_hit(damage)
@@ -37,10 +46,14 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
     
     def get_hp(self):
         return self.obj.hp
+    def get_accuracy(self):
+        return self.obj.accuracy
 
 class Monster_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
+            print(f"{self.obj.get_name()}은(는) 싸울 수 있는 상태가 아니다.")
+            self.disruption.exit_battle()
             return
         target = player
         # rand = random.randint(120, 200)
@@ -63,10 +76,15 @@ class Monster_battler(Entity_battler):
     
     def get_hp(self):
         return self.obj.get_hp()
+    
+    def get_accuracy(self):
+        return self.obj.get_accuracy()
 
 class Player_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
+            print(f"{self.obj.get_name()}은(는) 싸우기엔 체력이 충분하지 않다!")
+            self.disruption.exit_battle()
             return
         
         # answer = int(input("1. 공격한다.\n2. 가만히 있는다.\n:"))
@@ -75,8 +93,7 @@ class Player_battler(Entity_battler):
         #     self.attack(battler_groups[answer])
         actions = (
             "공격",
-            "도망",
-            "얼음!" # 테스트용
+            "도망"
         )
 
         select = questionary.select(
@@ -112,21 +129,9 @@ class Player_battler(Entity_battler):
 
         return battler_groups[targi_idx]
 
-    
-    # def attack(self, target, damage):
-    #     print(f"{self.obj.name}이(는) {target.obj.name}을(를) 공격했다.")
-    #     target.on_hit(damage)
-    #     print(
-    #         f"{self.obj.name}의 체력: {self.get_hp()}, "
-    #         f"{target.obj.name}의 체력: {target.get_hp()}\n"
-    #     )
-    #     if (self.is_death()):
-    #         self.disruption.exit_battle()
         
     def on_hit(self, damage):
         self.obj.change_hp(-damage)
-        # if (self.is_death()):
-        #     self.disruption.exit_battle()
 
     def is_death(self):
         return self.obj.get_hp() <= 0
@@ -136,3 +141,6 @@ class Player_battler(Entity_battler):
     
     def get_hp(self):
         return self.obj.get_hp()
+    
+    def get_accuracy(self):
+        return self.obj.get_accuracy_rate()
