@@ -31,7 +31,7 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
                 print(f"{target.obj.get_name()}이(가) 죽었습니다.")
                 self.disruption.exit_battle()
         else:
-            print("그러나 공격은 빗나갔다.")
+            print("...그러나 공격은 빗나갔다.")
         
     def on_hit(self, damage):
         self.obj.on_hit(damage)
@@ -50,6 +50,8 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
 class Monster_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
+            print(f"{self.obj.get_name()}은(는) 싸울 수 있는 상태가 아니다.")
+            self.disruption.exit_battle()
             return
         target = player
         # rand = random.randint(120, 200)
@@ -79,6 +81,8 @@ class Monster_battler(Entity_battler):
 class Player_battler(Entity_battler):
     def action(self, player, battler_groups):
         if (self.is_death()): 
+            print(f"{self.obj.get_name()}은(는) 싸우기엔 체력이 충분하지 않다!")
+            self.disruption.exit_battle()
             return
         
         # answer = int(input("1. 공격한다.\n2. 가만히 있는다.\n:"))
