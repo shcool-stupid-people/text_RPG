@@ -19,7 +19,9 @@ class skill_manager():
                 with open(file_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
-                for _ in range(len(data)):
-                    self.skills.append(skill(data[_]["name"], data[_]["cost"], data[_]["mp"], data[_]["rank"]))
+                for i in range(len(data)):
+                    skill_data = data[i]
+                    self.skills.append(skill(skill_data["name"], skill_data["cost"], 
+                                             skill_data["mp"], skill_data["rank"]))
 
                 
