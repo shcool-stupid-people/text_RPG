@@ -25,6 +25,7 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
             my_hp = max(self.get_hp(), 0) 
             target_hp = max(target.get_hp(), 0)
             print(
+                "[정보]: ",
                 f"{self.obj.get_name()}의 체력: {my_hp}, "
                 f"{target.obj.get_name()}의 체력: {target_hp}\n"
             )
@@ -32,7 +33,7 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
                 print(f"{target.obj.get_name()}이(가) 죽었습니다.")
                 self.disruption.exit_battle()
         else:
-            print("...그러나 공격은 빗나갔다.")
+            print(f"...그러나 {self.obj.get_name()}의 공격은 빗나갔다.")
         
     def on_hit(self, damage):
         self.obj.on_hit(damage)
