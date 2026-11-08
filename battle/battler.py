@@ -2,6 +2,7 @@ import random
 import time
 import questionary
 from questionary import Choice
+from player.resource import skill
 
 class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)를 반환하는 함수를 요청
     '''전투 시 생성하여 전투를 지속하는 객체(한 엔티티 당 하나)'''
@@ -93,6 +94,7 @@ class Player_battler(Entity_battler):
         #     self.attack(battler_groups[answer])
         actions = (
             "공격",
+            # "적 분석하기",
             "도망"
         )
 
@@ -107,9 +109,35 @@ class Player_battler(Entity_battler):
             self.action_run()
 
     def action_attack(self, battler_groups):
+        myskill = self.select_skill()
+        if (myskill == 0): # 기본 공격을 선택하면
+            damage = self.get_attack_power()
+        elif (isinstance(myskill, skill.Attack_skill)):
+            print(f"{self.obj.name}은(는) {myskill.get_name()}을(를) 사용했다!")
+            damage = myskill.get_damage()
+
+        elif (isinstance(myskill, skill.Effect_skill)):
+            print(f"{self.obj.name}은(는) 대단한 {myskill.get_name()}을(를) 사용했다!")
+            myskill.use_effect_skill(self.obj) # 플레이어
+            return
+        else:
+            print(type(skill))
         target = self.select_target(battler_groups)
-        damage = self.get_attack_power()
         self.attack(target, damage)
+
+    def select_skill(self):
+        skill_list = self.obj.get_skill()
+
+        selection = []
+        selection.append(Choice("기본 공격", 0))
+        for i in range(len(skill_list)):
+            selection.append(Choice(skill_list[i].get_name(), skill_list[i]))
+
+        skill = questionary.select(
+            "스킬을 선택하세요:",
+            choices = selection
+        ).ask()
+        return skill
 
     def action_run(self):
         print(f"{self.obj.name}이(가) 도망쳤습니다.")
@@ -122,7 +150,7 @@ class Player_battler(Entity_battler):
             selection.append(Choice(battler_groups[i].obj.name, i))
 
         targi_idx = questionary.rawselect(
-            "타겟을 선택하세요:",
+            "타겟을 선택하세요[번호키 사용]:",
             choices = selection
         ).ask()
         # print(targi_idx)

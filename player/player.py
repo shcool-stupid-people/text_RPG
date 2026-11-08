@@ -175,6 +175,7 @@ class player():
       
         else:
             print("item is not exist")
+
     def get_skill(self):
         return self.skill_possess
     
@@ -185,4 +186,7 @@ class player():
         using_skill = self.skill_possess[value]
         return using_skill.get_name(), using_skill.get_mp()
 
-#posses_skill를 불러와서 use_skill에 인덱스를 넘겨주는 형식으로 사용
+    #posses_skill를 불러와서 use_skill에 인덱스를 넘겨주는 형식으로 사용
+    def get_one_skill(self, index):
+        return self.skill_possess[index]
+

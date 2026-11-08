@@ -1,4 +1,4 @@
-from .skill import skill
+from .skill import *
 import os
 import json
 
@@ -21,7 +21,13 @@ class skill_manager():
 
                 for i in range(len(data)):
                     skill_data = data[i]
-                    self.skills.append(skill(skill_data["name"], skill_data["cost"], 
-                                             skill_data["mp"], skill_data["rank"]))
-
-                
+                    if skill_data["type"] == "attack":
+                        self.skills.append(Attack_skill(name=skill_data["name"], cost=skill_data["cost"], 
+                                             mp=skill_data["mp"], rank=skill_data["rank"], damage=skill_data["damage"]))
+                    elif skill_data["type"] == "effect":
+                        if skill_data["subtype"] == "cure":
+                            self.skills.append(Cure_effect_skill(name=skill_data["name"], cost=skill_data["cost"], 
+                                             mp=skill_data["mp"], rank=skill_data["rank"]))
+                        else:
+                            self.skills.append(Effect_skill(name=skill_data["name"], cost=skill_data["cost"], 
+                                             mp=skill_data["mp"], rank=skill_data["rank"]))
