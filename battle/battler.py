@@ -21,8 +21,9 @@ class Entity_battler: # 플레이어와 적 담당자에게 스크립트(대사)
         rand = random.randint(1, 100)
         if (rand <= self.get_accuracy()):
             target.on_hit(damage)
-            my_hp = min(self.get_hp(), 0)
-            target_hp = min(target.get_hp(), 0)
+            # 체력이 음수로 표시되지 않도록 함
+            my_hp = max(self.get_hp(), 0) 
+            target_hp = max(target.get_hp(), 0)
             print(
                 f"{self.obj.get_name()}의 체력: {my_hp}, "
                 f"{target.obj.get_name()}의 체력: {target_hp}\n"
