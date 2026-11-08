@@ -1,30 +1,41 @@
 [
   {
+    "type": "attack",
     "name": "파이어볼",
+    "damage": 20,
     "cost": 100,
     "mp": 20,
     "rank": "COMMON"
   },
   {
+    "type": "attack",
     "name": "아이스 스피어",
+    "damage": 25,
     "cost": 200,
     "mp": 35,
     "rank": "RARE"
   },
   {
+    "type": "attack",
     "name": "라이트닝 볼트",
+    "damage": 30,
     "cost": 350,
     "mp": 50,
     "rank": "EPIC"
   },
   {
+    "type": "attack",
     "name": "메테오",
+    "damage": 70,
     "cost": 1000,
     "mp": 150,
     "rank": "LEGENDARY"
   },
   {
+    "type": "effect",
+    "subtype": "cure",
     "name": "힐링",
+    "damage": 0,
     "cost": 150,
     "mp": 40,
     "rank": "COMMON"
