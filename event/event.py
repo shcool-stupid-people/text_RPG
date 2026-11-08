@@ -102,6 +102,9 @@ class event():
         result = random.randrange(0,3)
 
         if (result == 0):
+            if (not self.player.open_inventory()):
+                print("인벤토리가 비어있습니다.")
+                return
             rank = random.choice(self.equipment_lv_list) #등급 호출
             key = self.player.open_inventory()
             item_list = list(key.keys())
